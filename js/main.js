@@ -1,6 +1,6 @@
-var scene, camera, renderer, composer, earth, light, controls, stats;
+var scene, camera, renderer, composer, earth, light, stars, controls, stats;
 var renderModel, effectBloom, effectCopy, effectFXAA;
-var bloom = 1.0;
+var bloom = 0.0;
 
 var fakeDataServer = new FakeDataServer();
 
@@ -9,6 +9,8 @@ var randFloat = THREE.Math.randFloat;
 var shaders = new ShaderLoader('shaders');
 shaders.load('earth_vert', 'earth', 'vertex');
 shaders.load('earth_frag', 'earth', 'fragment');
+shaders.load('atmosphere_vert', 'atmosphere', 'vertex');
+shaders.load('atmosphere_frag', 'atmosphere', 'fragment');
 shaders.shaderSetLoaded = function() {
   init();
 }
@@ -26,6 +28,9 @@ function init() {
   var glContainer = document.getElementById('glCanvasContainer');
   glCanvasContainer.appendChild(renderer.domElement);
   controls = new THREE.OrbitControls(camera, glCanvasContainer);
+  controls.minDistance = 400;
+  controls.maxDistance = 3000;
+  controls.zoomSpeed = 0.2;
 
   renderer.autoClear = false;
   renderModel = new THREE.RenderPass(scene, camera);
@@ -63,7 +68,7 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.domElement);
 
-
+  stars = new Stars();
   light = new Light();
 
   earth = new Earth();
@@ -82,6 +87,7 @@ function animate() {
   composer.render();
   controls.update();
   stats.update()
+  stars.update();
 }
 
 function onResize() {

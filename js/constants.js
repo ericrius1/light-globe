@@ -1,0 +1,1 @@
+var EARTH_RADIUS = 200;

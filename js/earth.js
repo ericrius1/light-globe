@@ -1,7 +1,8 @@
 
 var Earth = function() {
   this.radius = 200;
-  this.opacity = 0.8
+  this.opacity = 0.9
+  this.castInterval = 500;
   this.earthMaterial = new THREE.ShaderMaterial({
     uniforms: {
       'texture': {
@@ -15,14 +16,25 @@ var Earth = function() {
     },
     vertexShader: shaders.vertexShaders.earth,
     fragmentShader: shaders.fragmentShaders.earth,
-    transparent: true
+    transparent: true,
   });
 
   var earthGeo = new THREE.SphereGeometry(this.radius, 40, 30);
   var earthMesh = new THREE.Mesh(earthGeo, this.earthMaterial);
   scene.add(earthMesh);
   earthMesh.rotation.y = Math.PI;
-  this.castInterval = 500;
+
+  this.atmosphereMaterial = new THREE.ShaderMaterial({
+    vertexShader: shaders.vertexShaders.atmosphere,
+    fragmentShader: shaders.fragmentShaders.atmosphere,
+    side: THREE.BackSide,
+    // blending: THREE.AdditiveBlending,
+    transparent: true,
+  });
+
+  var atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
+  atmosphereMesh.scale.set(1.1, 1.1, 1.1);
+  scene.add(atmosphereMesh);
 
   var earthFolder = gui.addFolder('Earth');
   earthFolder.add(this, 'opacity', 0, 1).onChange(function(value){
