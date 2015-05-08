@@ -2,7 +2,7 @@ console.log('yo');
 var scene, camera, renderer, earth, controls;
 
 
-var shaders = new ShaderLoader('/shaders');
+var shaders = new ShaderLoader('shaders');
 shaders.load('earth_vert', 'earth', 'vertex');
 shaders.load('earth_frag', 'earth', 'fragment');
 shaders.shaderSetLoaded = function(){
