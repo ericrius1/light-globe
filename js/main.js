@@ -1,20 +1,36 @@
 console.log('yo');
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 10000);
-camera.position.z = 20;
-
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+var scene, camera, renderer, earth, controls;
 
 
-var sphere = new THREE.Mesh(new THREE.SphereGeometry(5));
-scene.add(sphere);
-
-animate();
-
-function animate(){
-  requestAnimationFrame(animate);
-  renderer.render(scene, camera);
+var shaders = new ShaderLoader('/shaders');
+shaders.load('earth_vert', 'earth', 'vertex');
+shaders.load('earth_frag', 'earth', 'fragment');
+shaders.shaderSetLoaded = function(){
+  init();
 }
 
+
+function init() {
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+  camera.position.z = 1000;
+
+  renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  controls = new THREE.OrbitControls(camera);
+
+  earth = new Earth();
+  animate();
+
+  
+
+}
+
+
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+  controls.update();
+}
