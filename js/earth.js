@@ -1,7 +1,7 @@
 
 var Earth = function() {
   this.radius = 200;
-  this.opacity = 0.4
+  this.opacity = 0.6
   this.castInterval = 500;
   this.earthMaterial = new THREE.ShaderMaterial({
     uniforms: {

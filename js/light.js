@@ -1,4 +1,6 @@
 var Light = function(){
+  var numEmitters = 100;
+  this.emitterIndex = 0;
   this.richness = 10;
   this.debug = true;
   var lightFolder = gui.addFolder("Light");
@@ -8,9 +10,17 @@ var Light = function(){
     texture: THREE.ImageUtils.loadTexture('assets/star.png'),
     maxAge: 1
   });
-  scene.add(this.pGroup.mesh)
 
-  //need to create a pool of emitters!
+  this.emitters = [];
+  for(var i = 0; i < numEmitters; i++){
+    var emitter = new SPE.Emitter({
+      sizeStart: 50,
+      particleCount: 100
+    });
+    this.emitters.push(emitter);
+    this.pGroup.addEmitter(emitter);
+  }
+  scene.add(this.pGroup.mesh);
 }
 
 
@@ -19,16 +29,11 @@ Light.prototype.castBeam = function(startPoint, endPoint){
 
   //get velocity direction
 
+  var emitter = this.emitters[this.emitterIndex++];
   var velDir = new THREE.Vector3().subVectors(endPoint, startPoint);
-  var lightEmitter = new SPE.Emitter({
-    position: startPoint,
-    sizeStart: 50,
-    particleCount: 1000,
-    velocity: velDir
-    // velocitySpread: new THREE.Vector3(10, 10, 10)
-  });
-
-  this.pGroup.addEmitter(lightEmitter);
+  emitter.velocity = velDir;
+  emitter.position.copy(startPoint);
+  
 
 
   if(this.debug){
