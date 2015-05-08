@@ -30,13 +30,13 @@ Earth.prototype.yehior = function(){
   // }.bind(this), this.castInterval);
 }
 
+
+//earth is in charge of casting light beams, but has no conception of how those beams look.
+//light class is in control of that...
 Earth.prototype.castBeam = function(){
   var locationPair = fakeDataServer.generateLocationPair();
-  this.mapPoint(locationPair.start.latitude, locationPair.start.longitude);
-  this.mapPoint(locationPair.end.latitude, locationPair.end.longitude);
-
-  
-
+  var startPoint = this.mapPoint(locationPair.start.latitude, locationPair.start.longitude);
+  var endPoint = this.mapPoint(locationPair.end.latitude, locationPair.end.longitude);
 }
 
 
@@ -48,6 +48,14 @@ Earth.prototype.mapPoint = function(latitude, longitude){
 
   var phi = (90 - latitude) * Math.PI/ 180;
   var theta = (180 - longitude) * Math.PI/180;
+
+  var point = {
+    x: this.radius * Math.sin(phi) * Math.cos(theta),
+    y: this.radius * Math.cos(phi),
+    z: this.radius * Math.sin(phi) * Math.sin(theta)
+  };
+
+  return point;
 
 }
 

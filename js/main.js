@@ -1,4 +1,4 @@
-var scene, camera, renderer, earth, controls, stats;
+var scene, camera, renderer, earth, light, controls, stats;
 
 
 var fakeDataServer = new FakeDataServer();
@@ -25,7 +25,11 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.domElement);
 
+  gui = new dat.GUI();
+
   controls = new THREE.OrbitControls(camera);
+
+  light = new Light();
 
   earth = new Earth();
   earth.yehior();
@@ -42,5 +46,9 @@ function animate() {
   controls.update();
   stats.update()
 }
+
+
+
+window.addEventListener('resize', onResize, false);
 
 
