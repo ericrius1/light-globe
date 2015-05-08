@@ -1,4 +1,3 @@
-console.log('yo');
 var scene, camera, renderer, earth, controls;
 
 
@@ -22,6 +21,7 @@ function init() {
   controls = new THREE.OrbitControls(camera);
 
   earth = new Earth();
+  earth.mapPoint(37.763493, -122.454349);
   animate();
 
   
