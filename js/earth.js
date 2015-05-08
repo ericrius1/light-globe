@@ -1,12 +1,17 @@
 
 var Earth = function() {
   this.radius = 200;
-  var earthMaterial = new THREE.ShaderMaterial({
+  this.opacity = 0.8
+  this.earthMaterial = new THREE.ShaderMaterial({
     uniforms: {
       'texture': {
         type: 't',
         value: THREE.ImageUtils.loadTexture('assets/world.jpg')
       },
+      'opacity': {
+        type: 'f',
+        value: this.opacity
+      }
     },
     vertexShader: shaders.vertexShaders.earth,
     fragmentShader: shaders.fragmentShaders.earth,
@@ -14,10 +19,17 @@ var Earth = function() {
   });
 
   var earthGeo = new THREE.SphereGeometry(this.radius, 40, 30);
-  var earthMesh = new THREE.Mesh(earthGeo, earthMaterial);
+  var earthMesh = new THREE.Mesh(earthGeo, this.earthMaterial);
   scene.add(earthMesh);
   earthMesh.rotation.y = Math.PI;
   this.castInterval = 500;
+
+  var earthFolder = gui.addFolder('Earth');
+  earthFolder.add(this, 'opacity', 0, 1).onChange(function(value){
+    console.log(this)
+    this.earthMaterial.uniforms.opacity.value =  value;
+
+  }.bind(this));
 
 }
 
@@ -25,9 +37,9 @@ var Earth = function() {
 
 Earth.prototype.yehior = function(){
 
-  // this.castInterval = setInterval(function(){
+  this.castInterval = setInterval(function(){
     this.prepareBeam();
-  // }.bind(this), this.castInterval);
+  }.bind(this), this.castInterval);
 }
 
 

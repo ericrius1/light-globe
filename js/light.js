@@ -1,7 +1,7 @@
 var Light = function(){
   this.richness = 10;
-
-  gui.add(this, 'richness', 1, 10);
+  var lightFolder = gui.addFolder("Light");
+  lightFolder.add(this, 'richness', 1, 10);
 
 }
 
@@ -20,4 +20,8 @@ Light.prototype.castBeam = function(startPoint, endPoint){
 
   scene.add(line);
 
+
+  setTimeout(function(){
+    scene.remove(line);
+  }, 1000)
 }
