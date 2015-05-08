@@ -1,7 +1,7 @@
 
 var Earth = function() {
   this.radius = 200;
-  this.opacity = 0.9
+  this.opacity = 0.4
   this.castInterval = 500;
   this.earthMaterial = new THREE.ShaderMaterial({
     uniforms: {
@@ -33,7 +33,7 @@ var Earth = function() {
   });
 
   var atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
-  atmosphereMesh.scale.set(1.1, 1.1, 1.1);
+  // atmosphereMesh.scale.set(1.1, 1.1, 1.1);
   scene.add(atmosphereMesh);
 
   var earthFolder = gui.addFolder('Earth');
@@ -69,11 +69,11 @@ Earth.prototype.mapPoint = function(latitude, longitude){
   var phi = (90 - latitude) * Math.PI/ 180;
   var theta = (180 - longitude) * Math.PI/180;
 
-  var point = {
-    x: this.radius * Math.sin(phi) * Math.cos(theta),
-    y: this.radius * Math.cos(phi),
-    z: this.radius * Math.sin(phi) * Math.sin(theta)
-  };
+  var point = new THREE.Vector3(
+     this.radius * Math.sin(phi) * Math.cos(theta),
+     this.radius * Math.cos(phi),
+     this.radius * Math.sin(phi) * Math.sin(theta)
+  )
 
   return point;
 

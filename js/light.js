@@ -1,38 +1,46 @@
 var Light = function(){
   this.richness = 10;
+  this.debug = true;
   var lightFolder = gui.addFolder("Light");
   lightFolder.add(this, 'richness', 1, 10);
+
+  this.pGroup = new SPE.Group({
+    texture: THREE.ImageUtils.loadTexture('assets/star.png'),
+    maxAge: 1
+  });
+  scene.add(this.pGroup.mesh)
+
+  //need to create a pool of emitters!
 }
 
 
 
 Light.prototype.castBeam = function(startPoint, endPoint){
 
-  var beam = new THREE.Object3D();
-  scene.add(beam)
+  //get velocity direction
 
-  var canvas = this.generateTextureCanvas();
-  var texture = new THREE.Texture(canvas);
-  texture.needsUpdate = true;
-
-  var beamMaterial = new THREE.MeshBasicMaterial({
-    // map: texture,
-    blending: THREE.AdditiveBlending,
-    color: 0x4444aa,
-    side: THREE.DoubleSide, 
-    depthTest: false,
-    transparent: true,
+  var velDir = new THREE.Vector3().subVectors(endPoint, startPoint);
+  var lightEmitter = new SPE.Emitter({
+    position: startPoint,
+    sizeStart: 50,
+    particleCount: 1000,
+    velocity: velDir
+    // velocitySpread: new THREE.Vector3(10, 10, 10)
   });
 
-  var beamGeo = new THREE.PlaneGeometry(10, 10);
-  var nPlanes = 10;
-  for(var i = 0; i < nPlanes; i++){
-    var beamStrand = new THREE.Mesh(beamGeo, beamMaterial);
-    beamStrand.rotation.x = i/nPlanes * Math.PI;
-    beam.add(beamStrand);
+  this.pGroup.addEmitter(lightEmitter);
+
+
+  if(this.debug){
+    var startBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
+    startBox.position.copy(startPoint);
+    var endBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
+    endBox.position.copy(endPoint);
+    scene.add(startBox, endBox);
   }
+
 }
 
-Light.prototype.generateTextureCanvas = function() {
-
+Light.prototype.update = function(){
+  this.pGroup.tick();
 }

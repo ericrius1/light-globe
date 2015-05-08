@@ -88,6 +88,7 @@ function animate() {
   controls.update();
   stats.update()
   stars.update();
+  light.update();
 }
 
 function onResize() {
