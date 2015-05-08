@@ -17,15 +17,25 @@ var Earth = function() {
   var earthMesh = new THREE.Mesh(earthGeo, earthMaterial);
   scene.add(earthMesh);
   earthMesh.rotation.y = Math.PI;
+  this.castInterval = 500;
 
 }
 
 
-Earth.prototype.yehior = function(){
-  var locationPair = fakeDataServer.generateLocationPair();
 
+Earth.prototype.yehior = function(){
+
+  // this.castInterval = setInterval(function(){
+    this.castBeam();
+  // }.bind(this), this.castInterval);
+}
+
+Earth.prototype.castBeam = function(){
+  var locationPair = fakeDataServer.generateLocationPair();
   this.mapPoint(locationPair.start.latitude, locationPair.start.longitude);
   this.mapPoint(locationPair.end.latitude, locationPair.end.longitude);
+
+  
 
 }
 
@@ -38,10 +48,6 @@ Earth.prototype.mapPoint = function(latitude, longitude){
 
   var phi = (90 - latitude) * Math.PI/ 180;
   var theta = (180 - longitude) * Math.PI/180;
-
-  test.position.x = this.radius * Math.sin(phi) * Math.cos(theta);
-  test.position.y = this.radius * Math.cos(phi);
-  test.position.z = this.radius * Math.sin(phi) * Math.sin(theta);
 
 }
 
