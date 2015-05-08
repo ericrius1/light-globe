@@ -1,6 +1,10 @@
 var scene, camera, renderer, earth, controls;
 
 
+var fakeDataServer = new FakeDataServer();
+
+var randFloat = THREE.Math.randFloat;
+
 var shaders = new ShaderLoader('shaders');
 shaders.load('earth_vert', 'earth', 'vertex');
 shaders.load('earth_frag', 'earth', 'fragment');
@@ -21,7 +25,7 @@ function init() {
   controls = new THREE.OrbitControls(camera);
 
   earth = new Earth();
-  earth.mapPoint(37.763493, -122.454349);
+  earth.yehior();
   animate();
 
   
@@ -34,3 +38,5 @@ function animate() {
   renderer.render(scene, camera);
   controls.update();
 }
+
+
