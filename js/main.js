@@ -21,6 +21,7 @@ function init() {
 
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.autoclear = false;
   var glContainer = document.getElementById('glCanvasContainer');
   glCanvasContainer.appendChild(renderer.domElement);
   controls = new THREE.OrbitControls(camera, glCanvasContainer);
@@ -74,6 +75,7 @@ function onResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   effectFXAA.uniforms['resolution'].value.set(1/window.innerWidth, 1/window.innerHeight);
+  composer.reset();
 }
 
 
