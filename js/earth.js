@@ -26,7 +26,6 @@ var Earth = function() {
 
   var earthFolder = gui.addFolder('Earth');
   earthFolder.add(this, 'opacity', 0, 1).onChange(function(value){
-    console.log(this)
     this.earthMaterial.uniforms.opacity.value =  value;
 
   }.bind(this));
