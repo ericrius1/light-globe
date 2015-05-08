@@ -21,11 +21,13 @@ function init() {
 
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+  var glContainer = document.getElementById('glCanvasContainer');
+  glCanvasContainer.appendChild(renderer.domElement);
+  controls = new THREE.OrbitControls(camera, glCanvasContainer);
 
   renderer.autoClear = false;
   renderModel = new THREE.RenderPass(scene, camera);
-  effectBloom = new THREE.BloomPass(0);
+  effectBloom = new THREE.BloomPass(1);
   effectCopy = new THREE.ShaderPass(THREE.CopyShader);
   effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
   effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
@@ -40,9 +42,11 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.domElement);
 
-  gui = new dat.GUI();
-
-  controls = new THREE.OrbitControls(camera);
+  gui = new dat.GUI({
+    autoplace: false
+  });
+  guiContainer = document.getElementById('GUI');
+  guiContainer.appendChild(gui.domElement);
 
   light = new Light();
 
@@ -68,6 +72,8 @@ function onResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+
+  effectFXAA.uniforms['resolution'].value.set(1/window.innerWidth, 1/window.innerHeight);
 }
 
 
