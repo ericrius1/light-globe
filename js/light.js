@@ -8,15 +8,16 @@ var Light = function(){
 
   this.pGroup = new SPE.Group({
     texture: THREE.ImageUtils.loadTexture('assets/star.png'),
-    maxAge: 1
+    maxAge: 2
   });
 
   this.emitters = [];
   for(var i = 0; i < numEmitters; i++){
     var emitter = new SPE.Emitter({
       sizeStart: 50,
-      particleCount: 100
+      particleCount: 100,
     });
+    emitter.disable();
     this.emitters.push(emitter);
     this.pGroup.addEmitter(emitter);
   }
@@ -31,18 +32,27 @@ Light.prototype.castBeam = function(startPoint, endPoint){
 
   var emitter = this.emitters[this.emitterIndex++];
   var velDir = new THREE.Vector3().subVectors(endPoint, startPoint);
+  velDir.divideScalar(2);
   emitter.velocity = velDir;
   emitter.position.copy(startPoint);
+  emitter.enable();
   
-
+  var startBox,endBox;
 
   if(this.debug){
-    var startBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
+    startBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
     startBox.position.copy(startPoint);
-    var endBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
+    endBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
     endBox.position.copy(endPoint);
     scene.add(startBox, endBox);
   }
+
+  setTimeout(function(){
+    emitter.disable()
+    if(this.debug){
+      scene.remove(startBox, endBox);
+    }
+  }.bind(this), _.random(5000, 15000))
 
 }
 
