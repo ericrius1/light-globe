@@ -33,8 +33,8 @@ var Earth = function() {
   });
 
   var atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
-  // atmosphereMesh.scale.set(1.1, 1.1, 1.1);
-  scene.add(atmosphereMesh);
+  atmosphereMesh.scale.set(1.1, 1.1, 1.1);
+  // scene.add(atmosphereMesh);
 
   var earthFolder = gui.addFolder('Earth');
   earthFolder.add(this, 'opacity', 0, 1).onChange(function(value){

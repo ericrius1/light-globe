@@ -7,7 +7,7 @@ var Light = function(){
   lightFolder.add(this, 'richness', 1, 10);
 
   this.pGroup = new SPE.Group({
-    texture: THREE.ImageUtils.loadTexture('assets/star.png'),
+    texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
     maxAge: 2
   });
 
@@ -16,6 +16,8 @@ var Light = function(){
     var emitter = new SPE.Emitter({
       sizeStart: 50,
       particleCount: 100,
+      opacityEnd: 1,
+      colorStart: new THREE.Color().setRGB(Math.random(), Math.random(), Math.random())
     });
     emitter.disable();
     this.emitters.push(emitter);
@@ -29,7 +31,9 @@ var Light = function(){
 Light.prototype.castBeam = function(startPoint, endPoint){
 
   //get velocity direction
-
+  if(this.emitterIndex >= this.emitters.length){
+    this.emitterIndex = 0;
+  }
   var emitter = this.emitters[this.emitterIndex++];
   var velDir = new THREE.Vector3().subVectors(endPoint, startPoint);
   velDir.divideScalar(2);

@@ -1,10 +1,12 @@
 var FakeDataServer = function() {
+  //latidude: N = Positive, S = Negative
+  //longitude: E = Positive, W = Negative
   this.latitudeRange = {
-    min: 0,
+    min: -90,
     max: 90
   };
   this.longitudeRange = {
-    min: 0,
+    min: -180,
     max: 180
   };
 }
@@ -13,8 +15,8 @@ var FakeDataServer = function() {
 //returns an latidude and longitude tuple
 FakeDataServer.prototype.generateLocation = function() {
   return {
-    latitude: randFloat(0, 90),
-    longitude: randFloat(0, 180)
+    latitude: randFloat(this.latitudeRange.min, this.latitudeRange.max),
+    longitude: randFloat(this.longitudeRange.min, this.latitudeRange.max)
   };
 }
 

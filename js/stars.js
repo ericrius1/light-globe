@@ -11,17 +11,17 @@ var Stars = function(){
     radiusSpread: 200,
     sizeStart: 200,
     particleCount: 10000,
-    colorStartSpread: new THREE.Vector3(200, 1, 1),
-    colorEndSpread: new THREE.Vector3(1, 1, 1),
+    colorStartSpread: new THREE.Vector3(1, 1, 1),
     opacityStart: 0,
     opacityMiddle: 0.8,
     opacityEnd: 0
   });
 
-  this.pGroup.addEmitter(pEmitter);
+this.pGroup.mesh.frustumCulled = false;
   scene.add(this.pGroup.mesh);
 }
 
 Stars.prototype.update = function(){
+  console.log(this.pGroup.mesh.frustumCulled)
   this.pGroup.tick();
 }

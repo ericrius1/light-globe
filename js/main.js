@@ -28,7 +28,7 @@ function init() {
   var glContainer = document.getElementById('glCanvasContainer');
   glCanvasContainer.appendChild(renderer.domElement);
   controls = new THREE.OrbitControls(camera, glCanvasContainer);
-  controls.minDistance = 400;
+  // controls.minDistance = 400;
   controls.maxDistance = 3000;
   controls.zoomSpeed = 0.2;
 
@@ -99,6 +99,7 @@ function onResize() {
   effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
   composer.reset();
 }
+
 
 
 window.addEventListener('resize', onResize, false);
