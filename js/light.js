@@ -2,7 +2,7 @@ var Light = function(){
   var numEmitters = 100;
   this.emitterIndex = 0;
   this.richness = 10;
-  this.debug = true;
+  this.debug = false;
   var lightFolder = gui.addFolder("Light");
   lightFolder.add(this, 'richness', 1, 10);
 
@@ -23,6 +23,7 @@ var Light = function(){
     this.emitters.push(emitter);
     this.pGroup.addEmitter(emitter);
   }
+  this.pGroup.mesh.frustumCulled = false;
   scene.add(this.pGroup.mesh);
 }
 

@@ -17,11 +17,9 @@ var Stars = function(){
     opacityEnd: 0
   });
 
-this.pGroup.mesh.frustumCulled = false;
   scene.add(this.pGroup.mesh);
 }
 
 Stars.prototype.update = function(){
-  console.log(this.pGroup.mesh.frustumCulled)
   this.pGroup.tick();
 }
