@@ -61,6 +61,11 @@ Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
   endBox.position.copy(endPoint);
   scene.add(startBox, endBox);
 
+  objectControls.add(startBox);
+  startBox.select = function(){
+    console.log("SHNUUR")
+  }
+
   setTimeout(function() {
     emitter.disable()
     scene.remove(startBox, endBox);

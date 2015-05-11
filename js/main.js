@@ -1,4 +1,4 @@
-var scene, camera, renderer, composer, earth, light, stars, controls, textSpawner, postParams, stats;
+var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats;
 var renderModel, effectBloom, effectCopy, effectFXAA;
 
 var fakeDataServer = new FakeDataServer();
@@ -30,6 +30,8 @@ function init() {
   // controls.minDistance = 400;
   controls.maxDistance = 3000;
   controls.zoomSpeed = 0.2;
+
+  objectControls = new ObjectControls(camera, glCanvasContainer);
 
   postParams = {
     bloom: 1.1
@@ -86,6 +88,7 @@ function animate() {
   renderer.clear();
   composer.render();
   controls.update();
+  objectControls.update();
   stats.update()
   stars.update();
   light.update();
