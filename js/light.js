@@ -1,7 +1,6 @@
 var Light = function() {
   var numEmitters = 30;
   this.emitterIndex = 0;
-  this.debug = false;
   this.emitters = [];
   var lightFolder = gui.addFolder("Light");
 
@@ -56,19 +55,15 @@ Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
 
   var startBox, endBox;
 
-  if (this.debug) {
-    startBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
-    startBox.position.copy(startPoint);
-    endBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
-    endBox.position.copy(endPoint);
-    scene.add(startBox, endBox);
-  }
+  startBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
+  startBox.position.copy(startPoint);
+  endBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
+  endBox.position.copy(endPoint);
+  scene.add(startBox, endBox);
 
   setTimeout(function() {
     emitter.disable()
-    if (this.debug) {
-      scene.remove(startBox, endBox);
-    }
+    scene.remove(startBox, endBox);
   }.bind(this), shineTime)
 
 }

@@ -23,7 +23,7 @@ var Earth = function() {
     },
     vertexShader: shaders.vertexShaders.earth,
     fragmentShader: shaders.fragmentShaders.earth,
-    transparent: true,
+    transparent: true
   });
 
   var earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 60, 40);
@@ -63,7 +63,7 @@ Earth.prototype.yehior = function() {
 
 Earth.prototype.update = function() {
   this.camToCenterDistance = camera.position.distanceTo(ORIGIN);
-  this.opacity = map(this.camToCenterDistance, EARTH_RADIUS, EARTH_RADIUS * 5, 0.3, 0.98);
+  this.opacity = map(this.camToCenterDistance, EARTH_RADIUS, EARTH_RADIUS * 5, 0.6, 0.98);
   if(Math.abs(this.camToCenterDistance - this.prevCamToCenterDistance) > 1){
     console.log('change opacity')
     this.earthMaterial.uniforms.opacity.value = this.opacity;

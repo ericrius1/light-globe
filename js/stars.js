@@ -8,9 +8,10 @@ var Stars = function(){
   var pEmitter = new SPE.Emitter({
     type: 'sphere',
     radius: EARTH_RADIUS * 10,
-    radiusSpread: 200,
+    radiusSpread: 2000,
     sizeStart: 50,
-    particleCount: 10000,
+    sizeSpread: 30,
+    particleCount: 5000,
     colorStartSpread: new THREE.Vector3(1, 1, 1),
     colorEndSpread: new THREE.Vector3(1, 1, 1),
     opacityStart: 0,
