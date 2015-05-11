@@ -1,6 +1,5 @@
-var scene, camera, renderer, composer, earth, light, stars, controls, stats;
+var scene, camera, renderer, composer, earth, light, stars, controls, postParams, stats;
 var renderModel, effectBloom, effectCopy, effectFXAA;
-var bloom = 0.0;
 
 var fakeDataServer = new FakeDataServer();
 
@@ -32,9 +31,12 @@ function init() {
   controls.maxDistance = 3000;
   controls.zoomSpeed = 0.2;
 
+  postParams = {
+    bloom: 1.1
+  }
   renderer.autoClear = false;
   renderModel = new THREE.RenderPass(scene, camera);
-  effectBloom = new THREE.BloomPass(bloom);
+  effectBloom = new THREE.BloomPass(postParams.bloom);
   effectCopy = new THREE.ShaderPass(THREE.CopyShader);
   effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
   effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
@@ -56,9 +58,6 @@ function init() {
 
 
   var postFolder = gui.addFolder("Post Processing");
-  var postParams = {
-    bloom: 1.1
-  }
   postFolder.add(postParams, 'bloom', 0, 5).onChange(function() {
     effectBloom.copyUniforms.opacity.value = postParams.bloom;
   })

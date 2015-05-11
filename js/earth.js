@@ -19,7 +19,7 @@ var Earth = function() {
     transparent: true,
   });
 
-  var earthGeo = new THREE.SphereGeometry(this.radius, 40, 30);
+  var earthGeo = new THREE.SphereGeometry(this.radius, 60, 40);
   var earthMesh = new THREE.Mesh(earthGeo, this.earthMaterial);
   scene.add(earthMesh);
   earthMesh.rotation.y = Math.PI;
