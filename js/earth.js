@@ -1,11 +1,12 @@
 
 var Earth = function() {
   this.opacity = 0.6
+  this.camToCenterDistance = null;
   this.timing = {
     castIntervalMin: 100,
-    castIntervalMax: 3000,
-    shineTimeMin: 100,
-    shineTimeMax: 10000
+    castIntervalMax: 1000,
+    shineTimeMin: 10000,
+    shineTimeMax: 100000
 
   }
   this.earthMaterial = new THREE.ShaderMaterial({
@@ -42,36 +43,33 @@ var Earth = function() {
   scene.add(this.atmosphereMesh);
 
   var earthFolder = gui.addFolder('Earth');
-  earthFolder.add(this, 'opacity', 0, 1).onChange(function(value){
-    this.earthMaterial.uniforms.opacity.value =  value;
+  earthFolder.add(this, 'opacity', 0, 1).onChange(function(value) {
+    this.earthMaterial.uniforms.opacity.value = value;
   }.bind(this));
   earthFolder.add(this.timing, 'castIntervalMin', 100, 10000);
   earthFolder.add(this.timing, 'castIntervalMax', 1000, 10000);
-  earthFolder.add(this.timing, 'shineTimeMin', 10000, 100000);
+  earthFolder.add(this.timing, 'shineTimeMin', 1000, 100000);
   earthFolder.add(this.timing, 'shineTimeMax', 10000, 100000);
 
 }
 
-Earth.prototype.yehior = function(){
-  this.castTimeout = setTimeout(function(){
+Earth.prototype.yehior = function() {
+  this.castTimeout = setTimeout(function() {
     this.prepareBeam();
     this.yehior();
   }.bind(this), _.random(this.timing.castIntervalMin, this.timing.castIntervalMax));
 }
 
-Earth.prototype.update = function(){
-  if(camera.position.distanceTo(ORIGIN) < EARTH_RADIUS){
-    console.log('disable')
-    //We are inside earth, so disable atmosphere
+Earth.prototype.update = function() {
+  this.camToCenterDistance = camera.position.distanceTo(ORIGIN);
+  if (this.camToCenterDistance < EARTH_RADIUS && this.atmosphereMesh.visible) {
     this.atmosphereMesh.visible = false;
-  } else {
-    if(!this.atmosphereMesh.visible){
-      this.atmosphereMesh.visible = true;
-    }
+  } else if (this.camToCenterDistance > EARTH_RADIUS && !this.atmosphereMesh.visible) {
+    this.atmosphereMesh.visible = true;
   }
 }
 
-Earth.prototype.prepareBeam = function(){
+Earth.prototype.prepareBeam = function() {
   var locationPair = fakeDataServer.generateLocationPair();
   var startPoint = this.mapPoint(locationPair.start.latitude, locationPair.start.longitude);
   var endPoint = this.mapPoint(locationPair.end.latitude, locationPair.end.longitude);
@@ -79,19 +77,17 @@ Earth.prototype.prepareBeam = function(){
 }
 
 
-Earth.prototype.mapPoint = function(latitude, longitude){
+Earth.prototype.mapPoint = function(latitude, longitude) {
 
-  var phi = (90 - latitude) * Math.PI/ 180;
-  var theta = (180 - longitude) * Math.PI/180;
+  var phi = (90 - latitude) * Math.PI / 180;
+  var theta = (180 - longitude) * Math.PI / 180;
 
   var point = new THREE.Vector3(
-     EARTH_RADIUS * Math.sin(phi) * Math.cos(theta),
-     EARTH_RADIUS * Math.cos(phi),
-     EARTH_RADIUS * Math.sin(phi) * Math.sin(theta)
+    EARTH_RADIUS * Math.sin(phi) * Math.cos(theta),
+    EARTH_RADIUS * Math.cos(phi),
+    EARTH_RADIUS * Math.sin(phi) * Math.sin(theta)
   )
 
   return point;
 
 }
-
-

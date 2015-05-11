@@ -1,5 +1,5 @@
 var Light = function() {
-  var numEmitters = 10;
+  var numEmitters = 30;
   this.emitterIndex = 0;
   this.debug = false;
   this.emitters = [];
@@ -11,13 +11,14 @@ var Light = function() {
   });
 
   this.emitterParams = {
-    sizeStart: 50,
-    sizeMiddle: 30,
-    sizeEnd: 50,
+    sizeStart: 30,
+    sizeMiddle: 10,
+    sizeEnd: 30,
     particleCount: 5000,
     opacityStart: 0.5,
     opacityEnd: 0.5,
     colorStart: new THREE.Color(0x050afa),
+    colorMiddle: new THREE.Color(0xff0000),
     colorEnd: new THREE.Color(0xff00ff),
     alive: 0.5
   }

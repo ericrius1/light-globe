@@ -18,7 +18,7 @@ shaders.shaderSetLoaded = function() {
 function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.z = 1000;
+  camera.position.z = 700;
 
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio || 1);

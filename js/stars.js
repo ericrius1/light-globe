@@ -10,7 +10,7 @@ var Stars = function(){
     radius: EARTH_RADIUS * 10,
     radiusSpread: 200,
     sizeStart: 50,
-    particleCount: 1000,
+    particleCount: 10000,
     colorStartSpread: new THREE.Vector3(1, 1, 1),
     colorEndSpread: new THREE.Vector3(1, 1, 1),
     opacityStart: 0,
