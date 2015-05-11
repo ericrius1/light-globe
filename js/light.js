@@ -1,7 +1,6 @@
 var Light = function() {
   var numEmitters = 10;
   this.emitterIndex = 0;
-  this.richness = 10;
   this.debug = false;
   this.emitters = [];
   var lightFolder = gui.addFolder("Light");
@@ -41,7 +40,7 @@ var Light = function() {
 
 
 
-Light.prototype.castBeam = function(startPoint, endPoint) {
+Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
 
   //get velocity direction
   if (this.emitterIndex >= this.emitters.length) {
@@ -69,7 +68,7 @@ Light.prototype.castBeam = function(startPoint, endPoint) {
     if (this.debug) {
       scene.remove(startBox, endBox);
     }
-  }.bind(this), _.random(5000, 15000))
+  }.bind(this), shineTime)
 
 }
 

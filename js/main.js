@@ -1,4 +1,4 @@
-var scene, camera, renderer, composer, earth, light, stars, controls, postParams, stats;
+var scene, camera, renderer, composer, earth, light, stars, controls, textSpawner, postParams, stats;
 var renderModel, effectBloom, effectCopy, effectFXAA;
 
 var fakeDataServer = new FakeDataServer();
@@ -62,10 +62,14 @@ function init() {
     effectBloom.copyUniforms.opacity.value = postParams.bloom;
   })
 
-
-
   stats = new Stats();
   document.body.appendChild(stats.domElement);
+
+  textSpawner = new TextCreator(100);
+  var textMesh = textSpawner.createMesh('yo!', {});
+  textMesh.scale.divideScalar(5);
+  textMesh.position.z = EARTH_RADIUS + 200
+  scene.add(textMesh);
 
   stars = new Stars();
   light = new Light();
@@ -73,9 +77,6 @@ function init() {
   earth = new Earth();
   earth.yehior();
   animate();
-
-
-
 }
 
 

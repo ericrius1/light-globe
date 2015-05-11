@@ -1,8 +1,14 @@
 
 var Earth = function() {
-  this.radius = 200;
   this.opacity = 0.6
   this.castInterval = 500;
+  this.timing = {
+    castIntervalMin: 100,
+    castIntervalMax: 3000,
+    shineTimeMin: 100,
+    shineTimeMax: 10000
+
+  }
   this.earthMaterial = new THREE.ShaderMaterial({
     uniforms: {
       'texture': {
@@ -19,7 +25,7 @@ var Earth = function() {
     transparent: true,
   });
 
-  var earthGeo = new THREE.SphereGeometry(this.radius, 60, 40);
+  var earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 60, 40);
   var earthMesh = new THREE.Mesh(earthGeo, this.earthMaterial);
   scene.add(earthMesh);
   earthMesh.rotation.y = Math.PI;
@@ -39,28 +45,27 @@ var Earth = function() {
   var earthFolder = gui.addFolder('Earth');
   earthFolder.add(this, 'opacity', 0, 1).onChange(function(value){
     this.earthMaterial.uniforms.opacity.value =  value;
-
   }.bind(this));
+  earthFolder.add(this.timing, 'castIntervalMin', 100, 10000);
+  earthFolder.add(this.timing, 'castIntervalMax', 1000, 10000);
+  earthFolder.add(this.timing, 'shineTimeMin', 10000, 100000);
+  earthFolder.add(this.timing, 'shineTimeMax', 10000, 100000);
 
 }
-
-
 
 Earth.prototype.yehior = function(){
-
-  this.castInterval = setInterval(function(){
+  this.castTimeout = setTimeout(function(){
     this.prepareBeam();
-  }.bind(this), this.castInterval);
+    this.yehior();
+  }.bind(this), _.random(this.timing.castIntervalMin, this.timing.castIntervalMax));
 }
 
 
-//earth is in charge of casting light beams, but has no conception of how those beams look.
-//light class is in control of that...
 Earth.prototype.prepareBeam = function(){
   var locationPair = fakeDataServer.generateLocationPair();
   var startPoint = this.mapPoint(locationPair.start.latitude, locationPair.start.longitude);
   var endPoint = this.mapPoint(locationPair.end.latitude, locationPair.end.longitude);
-  light.castBeam(startPoint, endPoint);
+  light.castBeam(startPoint, endPoint, _.random(this.timing.shineTimeMin, this.timing.shineTimeMax));
 }
 
 
@@ -70,9 +75,9 @@ Earth.prototype.mapPoint = function(latitude, longitude){
   var theta = (180 - longitude) * Math.PI/180;
 
   var point = new THREE.Vector3(
-     this.radius * Math.sin(phi) * Math.cos(theta),
-     this.radius * Math.cos(phi),
-     this.radius * Math.sin(phi) * Math.sin(theta)
+     EARTH_RADIUS * Math.sin(phi) * Math.cos(theta),
+     EARTH_RADIUS * Math.cos(phi),
+     EARTH_RADIUS * Math.sin(phi) * Math.sin(theta)
   )
 
   return point;
