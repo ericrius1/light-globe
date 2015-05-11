@@ -1,7 +1,8 @@
 
 var Earth = function() {
-  this.opacity = 0.6
+  this.opacity = 0.6;
   this.camToCenterDistance = null;
+  this.prevCamToCenterDistance = null;
   this.timing = {
     castIntervalMin: 100,
     castIntervalMax: 1000,
@@ -62,11 +63,17 @@ Earth.prototype.yehior = function() {
 
 Earth.prototype.update = function() {
   this.camToCenterDistance = camera.position.distanceTo(ORIGIN);
+  this.opacity = map(this.camToCenterDistance, EARTH_RADIUS, EARTH_RADIUS * 5, 0.3, 0.98);
+  if(Math.abs(this.camToCenterDistance - this.prevCamToCenterDistance) > 1){
+    console.log('change opacity')
+    this.earthMaterial.uniforms.opacity.value = this.opacity;
+  }
   if (this.camToCenterDistance < EARTH_RADIUS && this.atmosphereMesh.visible) {
     this.atmosphereMesh.visible = false;
   } else if (this.camToCenterDistance > EARTH_RADIUS && !this.atmosphereMesh.visible) {
     this.atmosphereMesh.visible = true;
   }
+  this.prevCamToCenterDistance = this.camToCenterDistance;
 }
 
 Earth.prototype.prepareBeam = function() {

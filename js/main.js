@@ -65,11 +65,11 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.domElement);
 
-  textSpawner = new TextCreator(100);
-  var textMesh = textSpawner.createMesh('yo!', {});
-  textMesh.scale.divideScalar(5);
-  textMesh.position.z = EARTH_RADIUS + 200
-  scene.add(textMesh);
+  // textSpawner = new TextCreator(100);
+  // var textMesh = textSpawner.createMesh('yo!', {});
+  // textMesh.scale.divideScalar(5);
+  // textMesh.position.z = EARTH_RADIUS + 200
+  // scene.add(textMesh);
 
   stars = new Stars();
   light = new Light();
@@ -99,6 +99,10 @@ function onResize() {
 
   effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
   composer.reset();
+}
+
+function map(value, min1, max1, min2, max2) {
+  return min2 + (max2 - min2) * ((value - min1) / (max1 - min1));
 }
 
 

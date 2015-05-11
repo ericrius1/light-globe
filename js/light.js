@@ -20,7 +20,7 @@ var Light = function() {
     colorStart: new THREE.Color(0x050afa),
     colorMiddle: new THREE.Color(0xff0000),
     colorEnd: new THREE.Color(0xff00ff),
-    alive: 0.5
+    alive: 1.0
   }
 
   for (var i = 0; i < numEmitters; i++) {
