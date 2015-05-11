@@ -14,7 +14,7 @@ var Light = function() {
     sizeStart: 30,
     sizeMiddle: 10,
     sizeEnd: 30,
-    particleCount: 4000,
+    particleCount: 2000,
     opacityStart: 0.5,
     opacityEnd: 0.5,
     colorStart: new THREE.Color(0x050afa),
