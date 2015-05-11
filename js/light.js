@@ -14,12 +14,12 @@ var Light = function() {
     sizeStart: 50,
     sizeMiddle: 30,
     sizeEnd: 50,
-    particleCount: 10000,
+    particleCount: 5000,
     opacityStart: 0.5,
     opacityEnd: 0.5,
     colorStart: new THREE.Color(0x050afa),
     colorEnd: new THREE.Color(0xff00ff),
-    alive: 1
+    alive: 0.5
   }
 
   for (var i = 0; i < numEmitters; i++) {
@@ -31,7 +31,7 @@ var Light = function() {
   this.pGroup.mesh.frustumCulled = false;
   scene.add(this.pGroup.mesh);
 
-  lightFolder.add(this.emitterParams, 'alive', 0, 1).onChange(function(value) {
+  lightFolder.add(this.emitterParams, 'alive', .1, 1).onChange(function(value) {
     _.each(this.emitters, function(emitter) {
       emitter.alive = value;
     }.bind(this));

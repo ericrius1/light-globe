@@ -1,7 +1,6 @@
 
 var Earth = function() {
   this.opacity = 0.6
-  this.castInterval = 500;
   this.timing = {
     castIntervalMin: 100,
     castIntervalMax: 3000,
@@ -38,9 +37,9 @@ var Earth = function() {
     transparent: true,
   });
 
-  var atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
-  atmosphereMesh.scale.set(1.1, 1.1, 1.1);
-  // scene.add(atmosphereMesh);
+  this.atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
+  this.atmosphereMesh.scale.set(1.1, 1.1, 1.1);
+  scene.add(this.atmosphereMesh);
 
   var earthFolder = gui.addFolder('Earth');
   earthFolder.add(this, 'opacity', 0, 1).onChange(function(value){
@@ -60,6 +59,17 @@ Earth.prototype.yehior = function(){
   }.bind(this), _.random(this.timing.castIntervalMin, this.timing.castIntervalMax));
 }
 
+Earth.prototype.update = function(){
+  if(camera.position.distanceTo(ORIGIN) < EARTH_RADIUS){
+    console.log('disable')
+    //We are inside earth, so disable atmosphere
+    this.atmosphereMesh.visible = false;
+  } else {
+    if(!this.atmosphereMesh.visible){
+      this.atmosphereMesh.visible = true;
+    }
+  }
+}
 
 Earth.prototype.prepareBeam = function(){
   var locationPair = fakeDataServer.generateLocationPair();

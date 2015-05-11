@@ -89,6 +89,7 @@ function animate() {
   stats.update()
   stars.update();
   light.update();
+  earth.update();
 }
 
 function onResize() {
