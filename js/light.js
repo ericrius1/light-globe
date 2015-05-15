@@ -53,22 +53,23 @@ Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
   emitter.position.copy(startPoint);
   emitter.enable();
 
-  var startBox, endBox;
+  // var startBox, endBox;
 
-  startBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
-  startBox.position.copy(startPoint);
-  endBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
-  endBox.position.copy(endPoint);
-  scene.add(startBox, endBox);
+  // startBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
+  // startBox.position.copy(startPoint);
+  // endBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
+  // endBox.position.copy(endPoint);
+  // scene.add(startBox, endBox);
 
-  objectControls.add(startBox);
-  startBox.select = function(){
-    console.log("SHNUUR")
-  }
+  // objectControls.add(startBox);
+  // startBox.select = function(){
+  //   console.log("SHNUUR")
+  // }
 
   setTimeout(function() {
     emitter.disable()
-    scene.remove(startBox, endBox);
+    // scene.remove(startBox);
+    // scene.remove(endBox);
   }.bind(this), shineTime)
 
 }
