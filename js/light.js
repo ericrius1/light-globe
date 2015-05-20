@@ -10,15 +10,16 @@ var Light = function() {
   });
 
   this.emitterParams = {
-    sizeStart: 30,
+    sizeStart: 10,
     sizeMiddle: 10,
-    sizeEnd: 30,
+    sizeEnd: 10,
     particleCount: 2000,
-    opacityStart: 0.5,
-    opacityEnd: 0.5,
-    colorStart: new THREE.Color(0x050afa),
-    colorMiddle: new THREE.Color(0xff0000),
-    colorEnd: new THREE.Color(0xff00ff),
+    opacityStart: 0.2,
+    opacityEnd: 0.2,
+    colorStart: new THREE.Color(0xFFFF66),
+    colorEnd: new THREE.Color(0xFFFF66),
+    // colorMiddle: new THREE.Color(0xFFFCF1),
+    // colorEnd: new THREE.Color(0xFFFCF1),
     alive: 1.0
   }
 

@@ -18,7 +18,7 @@ shaders.shaderSetLoaded = function() {
 function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.z = 700;
+  camera.position.set(-37, 1800, -2344);
 
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio || 1);
@@ -30,6 +30,8 @@ function init() {
   // controls.minDistance = 400;
   controls.maxDistance = 3000;
   controls.zoomSpeed = 0.2;
+  controls.autoRotateSpeed = CAM_ROTATE_SPEED;
+
 
   objectControls = new ObjectControls(camera, glCanvasContainer);
 
@@ -79,6 +81,32 @@ function init() {
   earth = new Earth();
   earth.yehior();
   animate();
+  zoomCam();
+}
+
+function zoomCam(){
+  var curProps = {
+    x: camera.position.x,
+    y: camera.position.y,
+    z: camera.position.z
+  }
+
+  var endProps = {
+    x: -7,
+    y: 352,
+    z: -458
+  }
+
+  var zoomTween = new TWEEN.Tween(curProps).
+    to(endProps, CAM_ZOOM_TIME).
+    easing(TWEEN.Easing.Cubic.InOut).
+    onUpdate(function(){
+      camera.position.set(curProps.x, curProps.y, curProps.z);
+    }).start();
+
+    zoomTween.onComplete(function(){
+      controls.autoRotate =true;
+    })
 }
 
 
@@ -93,6 +121,7 @@ function animate() {
   stars.update();
   light.update();
   earth.update();
+  TWEEN.update();
 }
 
 function onResize() {
