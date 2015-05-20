@@ -9,9 +9,11 @@ var Light = function() {
     size: 10
   }
 
-  lightFolder.addColor(this.params, 'color').onChange(function(value) {
+  lightFolder.addColor(this.params, 'color').onChange(_.debounce(function(value) {
+    //Since we're destroying and creating particle group and all emitters on every color change,
+    //we need to debounce to give garbage collector some breathing room and avoid stuttering
     this.changeColor();
-  }.bind(this));
+  }.bind(this), 200));
 
   lightFolder.add(this.params, 'alive', .1, 1).onChange(function(value) {
     this.updateParticleCount(value);
@@ -25,7 +27,7 @@ var Light = function() {
 Light.prototype.changeColor = function(){
   this.destroyLightsBeams();
   this.createLightBeams();
-}
+};
 
 Light.prototype.changeSize = function(value){
   this.destroyLightsBeams();

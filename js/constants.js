@@ -2,7 +2,7 @@ var EARTH_RADIUS = 200;
 var ORIGIN = new THREE.Vector3(0, 0, 0);
 var CAM_ZOOM_TIME = 2000;
 var CAM_ROTATE_SPEED = 1.0;
-var STARTING_BLOOM = 1.7;
+var STARTING_BLOOM = 4.11;
 
 
 function randomHex(){
