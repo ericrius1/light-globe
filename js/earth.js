@@ -65,7 +65,6 @@ Earth.prototype.update = function() {
   this.camToCenterDistance = camera.position.distanceTo(ORIGIN);
   this.opacity = map(this.camToCenterDistance, EARTH_RADIUS, EARTH_RADIUS * 5, 0.6, 0.98);
   if(Math.abs(this.camToCenterDistance - this.prevCamToCenterDistance) > 1){
-    console.log('change opacity')
     this.earthMaterial.uniforms.opacity.value = this.opacity;
   }
   if (this.camToCenterDistance < EARTH_RADIUS && this.atmosphereMesh.visible) {

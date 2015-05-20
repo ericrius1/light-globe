@@ -63,6 +63,10 @@ var FakeDataServer = function() {
      {
       latitude: 45.494242, //Montreal
       longitude:  -73.607026
+    },
+     {
+      latitude: -37.777836, //Melbourne
+      longitude:  144.993099
     }
 
   ]

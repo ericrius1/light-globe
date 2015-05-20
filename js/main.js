@@ -75,6 +75,7 @@ function init() {
 
   stars = new Stars();
   light = new Light();
+  light.createLightBeams();
 
   earth = new Earth();
   earth.yehior();
