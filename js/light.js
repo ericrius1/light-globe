@@ -5,7 +5,8 @@ var Light = function() {
   var lightFolder = gui.addFolder("Light");
   this.params = {
     color: [214, 220, 170],
-    alive: 1.0
+    alive: 1.0,
+    size: 10
   }
 
   lightFolder.addColor(this.params, 'color').onChange(function(value) {
@@ -15,9 +16,18 @@ var Light = function() {
   lightFolder.add(this.params, 'alive', .1, 1).onChange(function(value) {
     this.updateParticleCount(value);
   }.bind(this));
+
+  lightFolder.add(this.params, 'size', 5, 30).onChange(function(value){
+    this.changeSize(value);
+  }.bind(this));
 }
 
 Light.prototype.changeColor = function(){
+  this.destroyLightsBeams();
+  this.createLightBeams();
+}
+
+Light.prototype.changeSize = function(value){
   this.destroyLightsBeams();
   this.createLightBeams();
 }
@@ -34,10 +44,8 @@ Light.prototype.createLightBeams = function() {
   });
 
   var emitterParams = {
-    sizeStart: 10,
-    sizeMiddle: 10,
-    sizeEnd: 10,
-    particleCount: 2000,
+    sizeStart: this.params.size,
+    particleCount: 1000,
     opacityStart: 0.2,
     opacityEnd: 0.2,
     colorStart: new THREE.Color().setRGB(this.params.color[0]/255, this.params.color[1]/255, this.params.color[2]/255),
