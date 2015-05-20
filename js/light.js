@@ -4,11 +4,11 @@ var Light = function() {
   this.emitters = [];
   var lightFolder = gui.addFolder("Light");
   this.params = {
-    startColor: [0.8, 0.1, 0.8],
+    color: [214, 220, 170],
     alive: 1.0
   }
 
-  lightFolder.addColor(this.params, 'startColor').onChange(function(value) {
+  lightFolder.addColor(this.params, 'color').onChange(function(value) {
     this.changeColor();
   }.bind(this));
 
@@ -20,9 +20,7 @@ var Light = function() {
 Light.prototype.changeColor = function(){
   this.destroyLightsBeams();
   this.createLightBeams();
-
 }
-
 Light.prototype.updateParticleCount = function(value) {
   _.each(this.emitters, function(emitter) {
     emitter.alive = value;
@@ -42,7 +40,7 @@ Light.prototype.createLightBeams = function() {
     particleCount: 2000,
     opacityStart: 0.2,
     opacityEnd: 0.2,
-    // colorStart: new THREE.Color().setRGB(this.params.startColor[0], this.params.startColor[1], this.params.startColor[2]),
+    colorStart: new THREE.Color().setRGB(this.params.color[0]/255, this.params.color[1]/255, this.params.color[2]/255),
     alive: this.params.alive,
   }
 
@@ -53,6 +51,7 @@ Light.prototype.createLightBeams = function() {
     this.pGroup.addEmitter(emitter);
   }
   this.pGroup.mesh.frustumCulled = false;
+  //need this to be negative so even when we later add pMesh again, it renders after earth and lines shows up
   this.pGroup.mesh.renderOrder = -10;
   scene.add(this.pGroup.mesh);
 }
