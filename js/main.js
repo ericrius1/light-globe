@@ -3,8 +3,6 @@ var renderModel, effectBloom, effectCopy, effectFXAA;
 
 var fakeDataServer = new FakeDataServer();
 
-var randFloat = THREE.Math.randFloat;
-
 var shaders = new ShaderLoader('shaders');
 shaders.load('earth_vert', 'earth', 'vertex');
 shaders.load('earth_frag', 'earth', 'fragment');
@@ -36,7 +34,7 @@ function init() {
   objectControls = new ObjectControls(camera, glCanvasContainer);
 
   postParams = {
-    bloom: 1.1
+    bloom: STARTING_BLOOM
   }
   renderer.autoClear = false;
   renderModel = new THREE.RenderPass(scene, camera);
