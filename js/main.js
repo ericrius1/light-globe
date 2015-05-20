@@ -75,9 +75,9 @@ function init() {
 
   stars = new Stars();
   light = new Light();
+  earth = new Earth();
   light.createLightBeams();
 
-  earth = new Earth();
   earth.yehior();
   animate();
   zoomCam();

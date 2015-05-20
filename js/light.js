@@ -9,19 +9,24 @@ var Light = function() {
   }
 
   lightFolder.addColor(this.params, 'startColor').onChange(function(value) {
-    console.log(value);
-  });
+    this.changeColor();
+  }.bind(this));
 
   lightFolder.add(this.params, 'alive', .1, 1).onChange(function(value) {
     this.updateParticleCount(value);
   }.bind(this));
 }
 
+Light.prototype.changeColor = function(){
+  this.destroyLightsBeams();
+  this.createLightBeams();
+
+}
+
 Light.prototype.updateParticleCount = function(value) {
   _.each(this.emitters, function(emitter) {
     emitter.alive = value;
   }.bind(this));
-
 }
 
 Light.prototype.createLightBeams = function() {
@@ -37,8 +42,8 @@ Light.prototype.createLightBeams = function() {
     particleCount: 2000,
     opacityStart: 0.2,
     opacityEnd: 0.2,
-    colorStart: new THREE.Color().setRGB(this.params.startColor[0], this.params.startColor[1], this.params.startColor[2]),
-    alive: this.params.alive
+    // colorStart: new THREE.Color().setRGB(this.params.startColor[0], this.params.startColor[1], this.params.startColor[2]),
+    alive: this.params.alive,
   }
 
   for (var i = 0; i < this.numEmitters; i++) {
@@ -48,13 +53,14 @@ Light.prototype.createLightBeams = function() {
     this.pGroup.addEmitter(emitter);
   }
   this.pGroup.mesh.frustumCulled = false;
+  this.pGroup.mesh.renderOrder = -10;
   scene.add(this.pGroup.mesh);
-
-
 }
 
 Light.prototype.destroyLightsBeams = function() {
-
+  scene.remove(this.pGroup.mesh);
+  this.pGroup = [];
+  this.emitters = [];
 }
 
 
@@ -72,18 +78,6 @@ Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
   emitter.position.copy(startPoint);
   emitter.enable();
 
-  // var startBox, endBox;
-
-  // startBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
-  // startBox.position.copy(startPoint);
-  // endBox = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 5));
-  // endBox.position.copy(endPoint);
-  // scene.add(startBox, endBox);
-
-  // objectControls.add(startBox);
-  // startBox.select = function(){
-  //   console.log("SHNUUR")
-  // }
 
   setTimeout(function() {
     emitter.disable()
