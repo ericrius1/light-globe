@@ -2,7 +2,7 @@ var Stars = function(){
 
   this.pGroup = new SPE.Group({
     texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
-    maxAge: 7
+    maxAge: 4
   });
 
   var pEmitter = new SPE.Emitter({

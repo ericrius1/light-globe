@@ -80,7 +80,9 @@ function init() {
   earth = new Earth();
   earth.yehior();
   animate();
-  zoomCam();
+  setTimeout(function(){
+    zoomCam();
+  }, WAIT_TO_ZOOM_TIME)
 }
 
 function zoomCam(){
