@@ -74,6 +74,7 @@ function init() {
   // scene.add(textMesh);
 
   stars = new Stars();
+  stars.createStars();
   light = new Light();
   light.createLightBeams();
 

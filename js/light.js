@@ -68,7 +68,6 @@ Light.prototype.createLightBeams = function() {
 
 Light.prototype.destroyLightsBeams = function() {
   scene.remove(this.pGroup.mesh);
-  this.pGroup = [];
   this.emitters = [];
 }
 
