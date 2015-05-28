@@ -8,7 +8,7 @@ var Earth = function() {
     castIntervalMax: 1000,
     shineTimeMin: 10000,
     shineTimeMax: 100000,
-    earthColor: [200, 10, 00]
+    earthColor: [4, 4, 30]
   };
   this.earthMaterial = new THREE.ShaderMaterial({
     uniforms: {
