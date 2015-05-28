@@ -16,6 +16,6 @@ body{
 }
 .dg{
   font-size: 20px;
-  width: 420px;
+  width: 420px !important;
 }
 

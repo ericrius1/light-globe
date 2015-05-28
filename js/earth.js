@@ -8,8 +8,11 @@ var Earth = function() {
     castIntervalMax: 1000,
     shineTimeMin: 10000,
     shineTimeMax: 100000,
-    earthColor: [4, 4, 30]
+    earthColor: [4, 4, 30],
+    skyColor: [15, 0, 0],
+    skyAlpha: 0.2
   };
+
   this.earthMaterial = new THREE.ShaderMaterial({
     uniforms: {
       'texture': {
@@ -29,6 +32,9 @@ var Earth = function() {
     fragmentShader: shaders.fragmentShaders.earth,
     transparent: true
   });
+
+  this.skyColor = new THREE.Color().setRGB(this.params.skyColor[0]/255, this.params.skyColor[1]/255, this.params.skyColor[2]/255);
+  renderer.setClearColor(this.skyColor, this.params.skyAlpha);
 
   var earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 60, 40);
   var earthMesh = new THREE.Mesh(earthGeo, this.earthMaterial);
@@ -58,6 +64,13 @@ var Earth = function() {
   earthFolder.addColor(this.params, 'earthColor').onChange(function(value){
     this.earthMaterial.uniforms.earthColor.value.set(value[0]/255, value[1]/255, value[2]/255);
   }.bind(this));
+  earthFolder.addColor(this.params, 'skyColor').onChange(function(value){
+    this.skyColor.setRGB(this.params.skyColor[0]/255, this.params.skyColor[1]/255, this.params.skyColor[2]/255);
+    renderer.setClearColor(this.skyColor, this.skyAlpha);
+  }.bind(this));
+  earthFolder.add(this.params, 'skyAlpha', 0, 1).onChange(function(value){
+    renderer.setClearColor(this.skyColor, value);
+  })
 
 }
 
