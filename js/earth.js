@@ -3,13 +3,13 @@ var Earth = function() {
   this.opacity = 0.6;
   this.camToCenterDistance = null;
   this.prevCamToCenterDistance = null;
-  this.timing = {
+  this.params = {
     castIntervalMin: 100,
     castIntervalMax: 1000,
     shineTimeMin: 10000,
-    shineTimeMax: 100000
-
-  }
+    shineTimeMax: 100000,
+    earthColor: [200, 10, 00]
+  };
   this.earthMaterial = new THREE.ShaderMaterial({
     uniforms: {
       'texture': {
@@ -19,6 +19,10 @@ var Earth = function() {
       'opacity': {
         type: 'f',
         value: this.opacity
+      },
+      'earthColor' : {
+        type: 'v3',
+        value: new THREE.Vector3(this.params.earthColor[0]/255, this.params.earthColor[1]/255, this.params.earthColor[2]/255)
       }
     },
     vertexShader: shaders.vertexShaders.earth,
@@ -47,10 +51,13 @@ var Earth = function() {
   earthFolder.add(this, 'opacity', 0, 1).onChange(function(value) {
     this.earthMaterial.uniforms.opacity.value = value;
   }.bind(this));
-  earthFolder.add(this.timing, 'castIntervalMin', 100, 10000);
-  earthFolder.add(this.timing, 'castIntervalMax', 1000, 10000);
-  earthFolder.add(this.timing, 'shineTimeMin', 1000, 100000);
-  earthFolder.add(this.timing, 'shineTimeMax', 10000, 100000);
+  earthFolder.add(this.params, 'castIntervalMin', 100, 10000);
+  earthFolder.add(this.params, 'castIntervalMax', 1000, 10000);
+  earthFolder.add(this.params, 'shineTimeMin', 1000, 100000);
+  earthFolder.add(this.params, 'shineTimeMax', 10000, 100000);
+  earthFolder.addColor(this.params, 'earthColor').onChange(function(value){
+    this.earthMaterial.uniforms.earthColor.value.set(value[0]/255, value[1]/255, value[2]/255);
+  }.bind(this));
 
 }
 
@@ -58,7 +65,7 @@ Earth.prototype.yehior = function() {
   this.castTimeout = setTimeout(function() {
     this.prepareBeam();
     this.yehior();
-  }.bind(this), _.random(this.timing.castIntervalMin, this.timing.castIntervalMax));
+  }.bind(this), _.random(this.params.castIntervalMin, this.params.castIntervalMax));
 }
 
 Earth.prototype.update = function() {
@@ -79,7 +86,7 @@ Earth.prototype.prepareBeam = function() {
   var locationPair = fakeDataServer.generateLocationPair();
   var startPoint = this.mapPoint(locationPair.start.latitude, locationPair.start.longitude);
   var endPoint = this.mapPoint(locationPair.end.latitude, locationPair.end.longitude);
-  light.castBeam(startPoint, endPoint, _.random(this.timing.shineTimeMin, this.timing.shineTimeMax));
+  light.castBeam(startPoint, endPoint, _.random(this.params.shineTimeMin, this.params.shineTimeMax));
 }
 
 
