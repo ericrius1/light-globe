@@ -10,7 +10,8 @@ var Earth = function() {
     shineTimeMax: 100000,
     earthColor: [4, 4, 30],
     skyColor: [15, 0, 0],
-    skyAlpha: 0.2
+    skyAlpha: 0.2,
+    atmosphereColor: [160, 160, 250]
   };
 
   this.earthMaterial = new THREE.ShaderMaterial({
@@ -42,6 +43,12 @@ var Earth = function() {
   earthMesh.rotation.y = Math.PI;
 
   this.atmosphereMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+      'atmosphereColor': {
+        type: 'v3',
+        value: new THREE.Vector3(this.params.atmosphereColor[0]/255, this.params.atmosphereColor[1]/255, this.params.atmosphereColor[2]/255)
+      }
+    },
     vertexShader: shaders.vertexShaders.atmosphere,
     fragmentShader: shaders.fragmentShaders.atmosphere,
     side: THREE.BackSide,
@@ -70,7 +77,10 @@ var Earth = function() {
   }.bind(this));
   earthFolder.add(this.params, 'skyAlpha', 0, 1).onChange(function(value){
     renderer.setClearColor(this.skyColor, value);
-  })
+  });
+  earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value){
+    this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0]/255, value[1]/255, value[2]/255);
+  }.bind(this));
 
 }
 
