@@ -1,4 +1,3 @@
-
 var Earth = function() {
   this.opacity = 0.6;
   this.camToCenterDistance = null;
@@ -14,39 +13,60 @@ var Earth = function() {
     atmosphereColor: [160, 160, 250]
   };
 
+  createInnerEarth();
+
+  //Need to create inner earth to allow see through to continents
+  function createInnerEarth() {
+    var earthMaterial = new THREE.MeshBasicMaterial({
+      map: THREE.ImageUtils.loadTexture('assets/world.jpg'),
+      side: THREE.BackSide,
+      transparent: true,
+      opacity: 0.5,
+    });
+
+    var earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 60, 40);
+    // var earthGeo = new THREE.DodecahedronGeometry(200, 1);
+    var earthMesh = new THREE.Mesh(earthGeo, earthMaterial);
+    scene.add(earthMesh);
+    // earthMesh.rotation.y = Math.PI;
+    earthMesh.rotation.y += Math.PI / 2;
+  }
+
+  var earthTexture = THREE.ImageUtils.loadTexture('assets/world.jpg');
+
   this.earthMaterial = new THREE.ShaderMaterial({
     uniforms: {
       'texture': {
         type: 't',
-        value: THREE.ImageUtils.loadTexture('assets/world.jpg')
+        value: earthTexture
       },
       'opacity': {
         type: 'f',
         value: this.opacity
       },
-      'earthColor' : {
+      'earthColor': {
         type: 'v3',
-        value: new THREE.Vector3(this.params.earthColor[0]/255, this.params.earthColor[1]/255, this.params.earthColor[2]/255)
+        value: new THREE.Vector3(this.params.earthColor[0] / 255, this.params.earthColor[1] / 255, this.params.earthColor[2] / 255)
       }
     },
     vertexShader: shaders.vertexShaders.earth,
     fragmentShader: shaders.fragmentShaders.earth,
-    transparent: true
+    transparent: true,
   });
 
-  this.skyColor = new THREE.Color().setRGB(this.params.skyColor[0]/255, this.params.skyColor[1]/255, this.params.skyColor[2]/255);
+  this.skyColor = new THREE.Color().setRGB(this.params.skyColor[0] / 255, this.params.skyColor[1] / 255, this.params.skyColor[2] / 255);
   renderer.setClearColor(this.skyColor, this.params.skyAlpha);
 
   var earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 60, 40);
   var earthMesh = new THREE.Mesh(earthGeo, this.earthMaterial);
-  scene.add(earthMesh);
   earthMesh.rotation.y = Math.PI;
+  scene.add(earthMesh);
 
   this.atmosphereMaterial = new THREE.ShaderMaterial({
     uniforms: {
       'atmosphereColor': {
         type: 'v3',
-        value: new THREE.Vector3(this.params.atmosphereColor[0]/255, this.params.atmosphereColor[1]/255, this.params.atmosphereColor[2]/255)
+        value: new THREE.Vector3(this.params.atmosphereColor[0] / 255, this.params.atmosphereColor[1] / 255, this.params.atmosphereColor[2] / 255)
       }
     },
     vertexShader: shaders.vertexShaders.atmosphere,
@@ -60,6 +80,7 @@ var Earth = function() {
   this.atmosphereMesh.scale.set(1.1, 1.1, 1.1);
   scene.add(this.atmosphereMesh);
 
+
   var earthFolder = gui.addFolder('Earth');
   earthFolder.add(this, 'opacity', 0, 1).onChange(function(value) {
     this.earthMaterial.uniforms.opacity.value = value;
@@ -68,18 +89,18 @@ var Earth = function() {
   earthFolder.add(this.params, 'castIntervalMax', 1000, 10000);
   earthFolder.add(this.params, 'shineTimeMin', 1000, 100000);
   earthFolder.add(this.params, 'shineTimeMax', 10000, 100000);
-  earthFolder.addColor(this.params, 'earthColor').onChange(function(value){
-    this.earthMaterial.uniforms.earthColor.value.set(value[0]/255, value[1]/255, value[2]/255);
+  earthFolder.addColor(this.params, 'earthColor').onChange(function(value) {
+    this.earthMaterial.uniforms.earthColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
   }.bind(this));
-  earthFolder.addColor(this.params, 'skyColor').onChange(function(value){
-    this.skyColor.setRGB(this.params.skyColor[0]/255, this.params.skyColor[1]/255, this.params.skyColor[2]/255);
+  earthFolder.addColor(this.params, 'skyColor').onChange(function(value) {
+    this.skyColor.setRGB(this.params.skyColor[0] / 255, this.params.skyColor[1] / 255, this.params.skyColor[2] / 255);
     renderer.setClearColor(this.skyColor, this.skyAlpha);
   }.bind(this));
-  earthFolder.add(this.params, 'skyAlpha', 0, 1).onChange(function(value){
+  earthFolder.add(this.params, 'skyAlpha', 0, 1).onChange(function(value) {
     renderer.setClearColor(this.skyColor, value);
   });
-  earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value){
-    this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0]/255, value[1]/255, value[2]/255);
+  earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value) {
+    this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
   }.bind(this));
 
 }
@@ -94,7 +115,7 @@ Earth.prototype.yehior = function() {
 Earth.prototype.update = function() {
   this.camToCenterDistance = camera.position.distanceTo(ORIGIN);
   this.opacity = map(this.camToCenterDistance, EARTH_RADIUS, EARTH_RADIUS * 5, 0.6, 0.98);
-  if(Math.abs(this.camToCenterDistance - this.prevCamToCenterDistance) > 1){
+  if (Math.abs(this.camToCenterDistance - this.prevCamToCenterDistance) > 1) {
     this.earthMaterial.uniforms.opacity.value = this.opacity;
   }
   if (this.camToCenterDistance < EARTH_RADIUS && this.atmosphereMesh.visible) {
