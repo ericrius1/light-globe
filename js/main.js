@@ -73,12 +73,11 @@ function init() {
   // textMesh.position.z = EARTH_RADIUS + 200
   // scene.add(textMesh);
 
-  // stars = new Stars();
-  // stars.createStars();
+  stars = new Stars();
+  stars.createStars();
   light = new Light();
   light.createLightBeams();
 
-  // testEarth = new TestEarth();
   earth = new Earth();
   earth.yehior();
   animate();
@@ -121,7 +120,7 @@ function animate() {
   controls.update();
   objectControls.update();
   stats.update()
-  // stars.update();  
+  stars.update();  
   light.update();
   earth.update();
   TWEEN.update();

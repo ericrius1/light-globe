@@ -21,15 +21,13 @@ var Earth = function() {
       map: THREE.ImageUtils.loadTexture('assets/world.jpg'),
       side: THREE.BackSide,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.6,
     });
 
     var earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 60, 40);
-    // var earthGeo = new THREE.DodecahedronGeometry(200, 1);
     var earthMesh = new THREE.Mesh(earthGeo, earthMaterial);
     scene.add(earthMesh);
-    // earthMesh.rotation.y = Math.PI;
-    earthMesh.rotation.y += Math.PI / 2;
+    earthMesh.rotation.y = Math.PI;
   }
 
   var earthTexture = THREE.ImageUtils.loadTexture('assets/world.jpg');
@@ -72,7 +70,6 @@ var Earth = function() {
     vertexShader: shaders.vertexShaders.atmosphere,
     fragmentShader: shaders.fragmentShaders.atmosphere,
     side: THREE.BackSide,
-    // blending: THREE.AdditiveBlending,
     transparent: true,
   });
 
