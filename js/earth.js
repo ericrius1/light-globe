@@ -7,7 +7,7 @@ var Earth = function() {
     castIntervalMax: 1000,
     shineTimeMin: 10000,
     shineTimeMax: 100000,
-    earthColor: [4, 4, 30],
+    earthColor: [200, 10, 200],
     skyColor: [15, 0, 0],
     skyAlpha: 0.2,
     atmosphereColor: [160, 160, 250]
@@ -32,25 +32,32 @@ var Earth = function() {
 
   var earthTexture = THREE.ImageUtils.loadTexture('assets/world.jpg');
 
-  this.earthMaterial = new THREE.ShaderMaterial({
-    uniforms: {
-      'texture': {
-        type: 't',
-        value: earthTexture
-      },
-      'opacity': {
-        type: 'f',
-        value: this.opacity
-      },
-      'earthColor': {
-        type: 'v3',
-        value: new THREE.Vector3(this.params.earthColor[0] / 255, this.params.earthColor[1] / 255, this.params.earthColor[2] / 255)
-      }
-    },
-    vertexShader: shaders.vertexShaders.earth,
-    fragmentShader: shaders.fragmentShaders.earth,
+  // this.earthMaterial = new THREE.ShaderMaterial({
+  //   uniforms: {
+  //     'texture': {
+  //       type: 't',
+  //       value: earthTexture
+  //     },
+  //     'opacity': {
+  //       type: 'f',
+  //       value: this.opacity
+  //     },
+  //     'earthColor': {
+  //       type: 'v3',
+  //       value: new THREE.Vector3(this.params.earthColor[0] / 255, this.params.earthColor[1] / 255, this.params.earthColor[2] / 255)
+  //     }
+  //   },
+  //   vertexShader: shaders.vertexShaders.earth,
+  //   fragmentShader: shaders.fragmentShaders.earth,
+  //   transparent: true,
+  // });
+
+  this.earthMaterial = new THREE.MeshBasicMaterial({
+    map: earthTexture,
     transparent: true,
-  });
+    opacity: 0.5,
+    color: new THREE.Color().setRGB(this.params.earthColor[0] / 255, this.params.earthColor[1] / 255, this.params.earthColor[2] / 255)
+  })
 
   this.skyColor = new THREE.Color().setRGB(this.params.skyColor[0] / 255, this.params.skyColor[1] / 255, this.params.skyColor[2] / 255);
   renderer.setClearColor(this.skyColor, this.params.skyAlpha);
@@ -113,7 +120,7 @@ Earth.prototype.update = function() {
   this.camToCenterDistance = camera.position.distanceTo(ORIGIN);
   this.opacity = map(this.camToCenterDistance, EARTH_RADIUS, EARTH_RADIUS * 5, 0.6, 0.98);
   if (Math.abs(this.camToCenterDistance - this.prevCamToCenterDistance) > 1) {
-    this.earthMaterial.uniforms.opacity.value = this.opacity;
+    // this.earthMaterial.uniforms.opacity.value = this.opacity;
   }
   if (this.camToCenterDistance < EARTH_RADIUS && this.atmosphereMesh.visible) {
     this.atmosphereMesh.visible = false;

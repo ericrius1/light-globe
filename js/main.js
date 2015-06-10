@@ -93,11 +93,7 @@ function zoomCam(){
     z: camera.position.z
   }
 
-  var endProps = {
-    x: -7,
-    y: 352,
-    z: -458
-  }
+  var endProps = CAM_POST_ZOOM_POSITION
 
   var zoomTween = new TWEEN.Tween(curProps).
     to(endProps, CAM_ZOOM_TIME).

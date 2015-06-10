@@ -22,6 +22,15 @@ var Light = function() {
   lightFolder.add(this.params, 'size', 5, 30).onChange(function(value){
     this.changeSize(value);
   }.bind(this));
+
+
+  var testLight = new THREE.PointLight(0xffffff);
+  testLight.position.z = CAM_POST_ZOOM_POSITION.z + 200
+  scene.add(testLight);
+
+  var debugLight = new THREE.Mesh(new THREE.SphereGeometry(10));
+  debugLight.position.copy(testLight.position);
+  scene.add(debugLight);
 }
 
 Light.prototype.changeColor = function(){

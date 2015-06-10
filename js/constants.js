@@ -4,7 +4,11 @@ var CAM_ZOOM_TIME = 2000;
 var CAM_ROTATE_SPEED = 1.0;
 var STARTING_BLOOM = 4.0;
 var WAIT_TO_ZOOM_TIME = 2000;
-
+var CAM_POST_ZOOM_POSITION = {
+    x: -7,
+    y: 352,
+    z: -458
+  }
 
 function randomHex(){
   return Math.floor(Math.random()*16777215).toString(16);
