@@ -7,13 +7,13 @@ var Earth = function() {
     castIntervalMax: 1000,
     shineTimeMin: 10000,
     shineTimeMax: 100000,
-    earthColor: [200, 10, 200],
+    earthColor: [20, 10, 20],
     skyColor: [15, 0, 0],
     skyAlpha: 0.2,
     atmosphereColor: [160, 160, 250]
   };
 
-  createInnerEarth();
+  // createInnerEarth();
 
   //Need to create inner earth to allow see through to continents
   function createInnerEarth() {
@@ -32,31 +32,16 @@ var Earth = function() {
 
   var earthTexture = THREE.ImageUtils.loadTexture('assets/world.jpg');
 
-  // this.earthMaterial = new THREE.ShaderMaterial({
-  //   uniforms: {
-  //     'texture': {
-  //       type: 't',
-  //       value: earthTexture
-  //     },
-  //     'opacity': {
-  //       type: 'f',
-  //       value: this.opacity
-  //     },
-  //     'earthColor': {
-  //       type: 'v3',
-  //       value: new THREE.Vector3(this.params.earthColor[0] / 255, this.params.earthColor[1] / 255, this.params.earthColor[2] / 255)
-  //     }
-  //   },
-  //   vertexShader: shaders.vertexShaders.earth,
-  //   fragmentShader: shaders.fragmentShaders.earth,
-  //   transparent: true,
-  // });
 
-  this.earthMaterial = new THREE.MeshBasicMaterial({
+  this.earthMaterial = new THREE.MeshPhongMaterial({
     map: earthTexture,
+    color: new THREE.Color(0xf00ff0),
     transparent: true,
     opacity: 0.5,
-    color: new THREE.Color().setRGB(this.params.earthColor[0] / 255, this.params.earthColor[1] / 255, this.params.earthColor[2] / 255)
+    shininess: 10,
+    specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
+    bumpMap: THREE.ImageUtils.loadTexture('assets/earth-bump.jpg')
+
   })
 
   this.skyColor = new THREE.Color().setRGB(this.params.skyColor[0] / 255, this.params.skyColor[1] / 255, this.params.skyColor[2] / 255);
@@ -82,7 +67,7 @@ var Earth = function() {
 
   this.atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
   this.atmosphereMesh.scale.set(1.1, 1.1, 1.1);
-  scene.add(this.atmosphereMesh);
+  // scene.add(this.atmosphereMesh);
 
 
   var earthFolder = gui.addFolder('Earth');
@@ -94,7 +79,7 @@ var Earth = function() {
   earthFolder.add(this.params, 'shineTimeMin', 1000, 100000);
   earthFolder.add(this.params, 'shineTimeMax', 10000, 100000);
   earthFolder.addColor(this.params, 'earthColor').onChange(function(value) {
-    this.earthMaterial.uniforms.earthColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
+    this.earthMaterial.color.setRGB(value[0] / 255, value[1] / 255, value[2] / 255);
   }.bind(this));
   earthFolder.addColor(this.params, 'skyColor').onChange(function(value) {
     this.skyColor.setRGB(this.params.skyColor[0] / 255, this.params.skyColor[1] / 255, this.params.skyColor[2] / 255);

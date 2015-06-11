@@ -24,13 +24,21 @@ var Light = function() {
   }.bind(this));
 
 
-  var testLight = new THREE.PointLight(0xffffff);
-  testLight.position.z = CAM_POST_ZOOM_POSITION.z + 200
-  scene.add(testLight);
 
-  var debugLight = new THREE.Mesh(new THREE.SphereGeometry(10));
-  debugLight.position.copy(testLight.position);
-  scene.add(debugLight);
+var light = new THREE.AmbientLight( 0x888888 )
+  // scene.add( light )
+  // var light  = new THREE.DirectionalLight( 'white', 1)
+  // light.position.set(5,5,5)
+  // light.target.position.set( 0, 0, 0 )
+  // scene.add( light )
+
+  var light = new THREE.DirectionalLight( 0xcccccc, 1 )
+  light.position.set(0, 0, 1)
+  scene.add( light )
+
+    var light = new THREE.DirectionalLight( 0xcccccc, 1 )
+  light.position.set(0, 0, -1)
+  scene.add( light )
 }
 
 Light.prototype.changeColor = function(){
