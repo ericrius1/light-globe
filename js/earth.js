@@ -35,12 +35,12 @@ var Earth = function() {
 
   this.earthMaterial = new THREE.MeshPhongMaterial({
     map: earthTexture,
-    color: new THREE.Color(0xf00ff0),
+    color: new THREE.Color(0x0A5882),
     transparent: true,
     opacity: 0.5,
     shininess: 10,
     specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
-    bumpMap: THREE.ImageUtils.loadTexture('assets/earth-bump.jpg')
+    normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg')
 
   })
 
