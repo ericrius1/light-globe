@@ -40,7 +40,7 @@ var Earth = function() {
     opacity: this.opacity,
     shininess: 10,
     specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
-    // normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg')
+    normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg')
 
   })
 

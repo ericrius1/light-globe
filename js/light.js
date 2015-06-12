@@ -3,6 +3,10 @@ var Light = function() {
   this.emitterIndex = 0;
   this.emitters = [];
   var lightFolder = gui.addFolder("Light");
+  this.camLight = new THREE.DirectionalLight(0xffffff, 1.5);
+  this.camDirVector = new THREE.Vector3(0, 0, -1);
+  this.shnur = 1;
+
   this.params = {
     color: [214, 220, 170],
     alive: 1.0,
@@ -25,29 +29,24 @@ var Light = function() {
 
 
 
-var light = new THREE.AmbientLight( 0x888888 )
-  // scene.add( light )
-  // var light  = new THREE.DirectionalLight( 'white', 1)
-  // light.position.set(5,5,5)
-  // light.target.position.set( 0, 0, 0 )
-  // scene.add( light )
 
-  var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
-  light.position.set(0, 0, 1)
-  scene.add( light )
+  this.camLight = new THREE.DirectionalLight( 0xcccccc, 1.5 )
 
-  var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
-  light.position.set(0, 0, -1)
-  scene.add( light )
+  scene.add( this.camLight )
+
+//   var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
+//   light.position.set(0, 0, -1)
+//   scene.add( light )
 
 
-  var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
-  light.position.set(0, 1, 0)
-  scene.add( light )
+//   var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
+//   light.position.set(0, 1, 0)
+//   scene.add( light )
 
-    var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
-  light.position.set(0, -1, 0)
-  scene.add( light )
+//     var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
+//   light.position.set(0, -1, 0)
+//   scene.add( light )
+// }
 }
 
 Light.prototype.changeColor = function(){
@@ -122,5 +121,10 @@ Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
 }
 
 Light.prototype.update = function() {
+  this.camDirVector.set(0, 0, 1);
+  this.camDirVector.applyQuaternion(camera.quaternion);
+  // this.camDirVector.normalize();
+  console.log(this.camDirVector)
+  this.camLight.position.set(this.camDirVector.x, this.camDirVector.y, this.camDirVector.z)
   this.pGroup.tick();
 }
