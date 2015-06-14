@@ -30,9 +30,9 @@ var Light = function() {
 
 
 
-  this.camLight = new THREE.DirectionalLight( 0xcccccc, 1.5 )
+  this.camLight = new THREE.DirectionalLight( 0xffffff, 0.1 )
 
-  scene.add( this.camLight )
+  scene.add( this.camLight ) 
 
 //   var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
 //   light.position.set(0, 0, -1)

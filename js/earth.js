@@ -10,15 +10,17 @@ var Earth = function() {
     earthColor: [20, 10, 20],
     skyColor: [15, 0, 0],
     skyAlpha: 0.2,
-    atmosphereColor: [160, 160, 250]
+    atmosphereColor: [179, 179, 215],
+    shininess: 20
   };
 
   // createInnerEarth();
+  var earthTexture = THREE.ImageUtils.loadTexture('assets/earth-diffuse.jpg');
 
   //Need to create inner earth to allow see through to continents
   function createInnerEarth() {
     var earthMaterial = new THREE.MeshBasicMaterial({
-      map: THREE.ImageUtils.loadTexture('assets/world.jpg'),
+      map: earthTexture,
       side: THREE.BackSide,
       transparent: true,
       opacity: 0.6,
@@ -30,15 +32,16 @@ var Earth = function() {
     earthMesh.rotation.y = Math.PI;
   }
 
-  var earthTexture = THREE.ImageUtils.loadTexture('assets/world.jpg');
 
 
   this.earthMaterial = new THREE.MeshPhongMaterial({
     map: earthTexture,
-    color: new THREE.Color(0x0A5882),
+    // color: new THREE.Color(0x00ff00),
+    // emissive: new THREE.Color(0x000000),
+    specular: new THREE.Color(0x9bd3fe),
     transparent: true,
     opacity: this.opacity,
-    shininess: 10,
+    shininess: this.params.shininess,
     specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
     normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg')
 
@@ -67,7 +70,7 @@ var Earth = function() {
 
   this.atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
   this.atmosphereMesh.scale.set(1.1, 1.1, 1.1);
-  // scene.add(this.atmosphereMesh);
+  scene.add(this.atmosphereMesh);
 
 
   var earthFolder = gui.addFolder('Earth');
@@ -90,6 +93,9 @@ var Earth = function() {
   });
   earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value) {
     this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
+  }.bind(this));
+  earthFolder.add(this.params, "shininess", 1, 100).onChange(function(value) {
+    this.earthMaterial.shininess = value
   }.bind(this));
 
 }
