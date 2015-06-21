@@ -15,7 +15,7 @@ var Earth = function() {
   };
 
   // createInnerEarth();
-  var earthTexture = THREE.ImageUtils.loadTexture('assets/earth-diffuse.jpg');
+  var earthTexture = THREE.ImageUtils.loadTexture('assets/newearth.png');
 
   //Need to create inner earth to allow see through to continents
   function createInnerEarth() {
@@ -36,7 +36,7 @@ var Earth = function() {
 
   this.earthMaterial = new THREE.MeshPhongMaterial({
     map: earthTexture,
-    // color: new THREE.Color(0x00ff00),
+    color: new THREE.Color(0x00ff00),
     // emissive: new THREE.Color(0x000000),
     specular: new THREE.Color(0x9bd3fe),
     transparent: true,
