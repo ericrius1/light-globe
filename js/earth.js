@@ -7,7 +7,7 @@ var Earth = function() {
     castIntervalMax: 1000,
     shineTimeMin: 10000,
     shineTimeMax: 100000,
-    earthColor: [20, 10, 20],
+    earthColor: [10, 150, 10],
     skyColor: [15, 0, 0],
     skyAlpha: 0.2,
     atmosphereColor: [179, 179, 215],
