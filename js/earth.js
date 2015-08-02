@@ -14,23 +14,7 @@ var Earth = function() {
     shininess: 20
   };
 
-  // createInnerEarth();
   var earthTexture = THREE.ImageUtils.loadTexture('assets/newearth.png');
-
-  //Need to create inner earth to allow see through to continents
-  function createInnerEarth() {
-    var earthMaterial = new THREE.MeshBasicMaterial({
-      map: earthTexture,
-      side: THREE.BackSide,
-      transparent: true,
-      opacity: 0.6,
-    });
-
-    var earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 60, 40);
-    var earthMesh = new THREE.Mesh(earthGeo, earthMaterial);
-    scene.add(earthMesh);
-    earthMesh.rotation.y = Math.PI;
-  }
 
 
 

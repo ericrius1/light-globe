@@ -60,7 +60,7 @@ Light.prototype.createLightBeams = function() {
 
   var emitterParams = {
     sizeStart: this.params.size,
-    particleCount: 1000,
+    particleCount: 2000,
     opacityStart: 0.2,
     opacityEnd: 0.2,
     colorStart: new THREE.Color().setRGB(this.params.color[0]/255, this.params.color[1]/255, this.params.color[2]/255),
