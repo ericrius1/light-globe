@@ -27,7 +27,9 @@ var Earth = function() {
     opacity: this.opacity,
     shininess: this.params.shininess,
     specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
-    normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg')
+    normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg'),
+    depthWrite: false,
+    depthTest: false
 
   })
 
@@ -54,7 +56,7 @@ var Earth = function() {
 
   this.atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
   this.atmosphereMesh.scale.set(1.1, 1.1, 1.1);
-  scene.add(this.atmosphereMesh);
+  // scene.add(this.atmosphereMesh);
 
 
   var earthFolder = gui.addFolder('Earth');
