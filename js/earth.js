@@ -11,6 +11,7 @@ var Earth = function() {
     skyColor: [15, 0, 0],
     skyAlpha: 0.2,
     atmosphereColor: [179, 179, 215],
+    atmosphereIntensity: 5,
     shininess: 2,
     water: [10, 10, 200]
   };
@@ -44,6 +45,10 @@ var Earth = function() {
       'atmosphereColor': {
         type: 'v3',
         value: new THREE.Vector3(this.params.atmosphereColor[0] / 255, this.params.atmosphereColor[1] / 255, this.params.atmosphereColor[2] / 255)
+      },
+      'intensity': {
+        type: 'f',
+        value: this.params.atmosphereIntensity
       }
     },
     vertexShader: shaders.vertexShaders.atmosphere,
@@ -75,6 +80,9 @@ var Earth = function() {
   earthFolder.add(this.params, 'skyAlpha', 0, 1).onChange(function(value) {
     renderer.setClearColor(this.skyColor, value);
   });
+  earthFolder.add(this.params, 'atmosphereIntensity', 0, 10).onChange(function(value) {
+    this.atmosphereMaterial.uniforms.intensity.value = value;
+  }.bind(this));
   earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value) {
     this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
   }.bind(this));
