@@ -81,7 +81,7 @@ var Earth = function() {
     renderer.setClearColor(this.skyColor, value);
   });
   earthFolder.add(this.params, 'atmosphereIntensity', 0, 10).onChange(function(value) {
-    this.atmosphereMaterial.uniforms.intensity.value = value;
+    this.atmosphereMaterial.uniforms.intensity.value = (10 - value);
   }.bind(this));
   earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value) {
     this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
