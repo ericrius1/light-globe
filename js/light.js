@@ -10,7 +10,7 @@ var Light = function() {
   this.params = {
     color: [214, 220, 170],
     alive: 1.0,
-    size: 10
+    size: 5
   }
 
   lightFolder.addColor(this.params, 'color').onChange(_.debounce(function(value) {
