@@ -34,19 +34,7 @@ var Light = function() {
 
   scene.add( this.camLight ) 
 
-//   var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
-//   light.position.set(0, 0, -1)
-//   scene.add( light )
 
-
-//   var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
-//   light.position.set(0, 1, 0)
-//   scene.add( light )
-
-//     var light = new THREE.DirectionalLight( 0xcccccc, 1.5 )
-//   light.position.set(0, -1, 0)
-//   scene.add( light )
-// }
 }
 
 Light.prototype.changeColor = function(){
@@ -114,8 +102,6 @@ Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
 
   setTimeout(function() {
     emitter.disable()
-      // scene.remove(startBox);
-      // scene.remove(endBox);
   }.bind(this), shineTime)
 
 }
@@ -123,8 +109,6 @@ Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
 Light.prototype.update = function() {
   this.camDirVector.set(0, 0, 1);
   this.camDirVector.applyQuaternion(camera.quaternion);
-  // this.camDirVector.normalize();
-  console.log(this.camDirVector)
   this.camLight.position.set(this.camDirVector.x, this.camDirVector.y, this.camDirVector.z)
   this.pGroup.tick();
 }
