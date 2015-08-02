@@ -42,17 +42,17 @@ var Earth = function() {
     color: new THREE.Color(0x0a960a),
     specular: new THREE.Color(0x0a0ac8),
     transparent: true,
-    opacity: 0.1,
+    opacity: 0.2,
     shininess: this.params.shininess,
     specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
     normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg'),
     side: THREE.BackSide,
-    depthWrite: false,
     depthTest: false,
   });
   var innerEarthMesh = new THREE.Mesh(earthGeo, this.innerEarthMaterial);
   // innerEarthMesh.scale.set(1.1, 1.1, 1.1)
   scene.add(innerEarthMesh); 
+  innerEarthMesh.rotation.y = Math.PI
 
 
 
@@ -81,7 +81,6 @@ var Earth = function() {
   var earthFolder = gui.addFolder('Earth');
   earthFolder.add(this, 'opacity', 0, 1).onChange(function(value) {
     this.earthMaterial.opacity = value;
-    this.innerEarthMaterial.opacity = value;
   }.bind(this));
   earthFolder.add(this.params, 'castIntervalMin', 100, 10000);
   earthFolder.add(this.params, 'castIntervalMax', 1000, 10000);

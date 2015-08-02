@@ -1,4 +1,4 @@
-var scene, camera, renderer, composer, earth, light, stars, controls, objectControls, textSpawner, postParams, stats, testEarth;
+var scene, camera, renderer, composer, earth, light, stars, controls, textSpawner, postParams, stats, testEarth;
 var renderModel, effectBloom, effectCopy, effectFXAA;
 
 var fakeDataServer = new FakeDataServer();
@@ -29,9 +29,6 @@ function init() {
   controls.maxDistance = 3000;
   controls.zoomSpeed = 0.2;
   controls.autoRotateSpeed = CAM_ROTATE_SPEED;
-
-
-  objectControls = new ObjectControls(camera, glCanvasContainer);
 
   postParams = {
     bloom: STARTING_BLOOM
@@ -106,7 +103,6 @@ function animate() {
   renderer.clear();
   composer.render();
   controls.update();
-  objectControls.update();
   stats.update()
   stars.update();  
   light.update();
