@@ -57,8 +57,6 @@ function init() {
   guiContainer.appendChild(gui.domElement);
 
 
-
-
   var postFolder = gui.addFolder("Post Processing");
   postFolder.add(postParams, 'bloom', 0, 5).onChange(function() {
     effectBloom.copyUniforms.opacity.value = postParams.bloom;
@@ -66,12 +64,6 @@ function init() {
 
   stats = new Stats();
   document.body.appendChild(stats.domElement);
-
-  // textSpawner = new TextCreator(100);
-  // var textMesh = textSpawner.createMesh('yo!', {});
-  // textMesh.scale.divideScalar(5);
-  // textMesh.position.z = EARTH_RADIUS + 200
-  // scene.add(textMesh);
 
   stars = new Stars();
   stars.createStars();

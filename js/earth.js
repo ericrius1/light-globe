@@ -22,7 +22,7 @@ var Earth = function() {
   this.earthMaterial = new THREE.MeshPhongMaterial({
     map: earthTexture,
     color: new THREE.Color(0x00ff00),
-    specular: new THREE.Color(0x9bd3fe),
+    specular: new THREE.Color(0x0a0ac8),
     transparent: true,
     opacity: this.opacity,
     shininess: this.params.shininess,
