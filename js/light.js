@@ -10,7 +10,8 @@ var Light = function() {
   this.params = {
     color: [214, 220, 170],
     alive: 1.0,
-    size: 5
+    size: 5,
+    intensity: 0.2
   }
 
   lightFolder.addColor(this.params, 'color').onChange(_.debounce(function(value) {
@@ -27,10 +28,14 @@ var Light = function() {
     this.changeSize(value);
   }.bind(this));
 
+  lightFolder.add(this.params, 'intensity', 0, 1).onChange(function(value) {
+    this.camLight.intensity = value;
+  }.bind(this));
 
 
 
-  this.camLight = new THREE.DirectionalLight( 0xffffff, .5 )
+
+  this.camLight = new THREE.DirectionalLight( 0xffffff, this.params.intensity);
 
   scene.add( this.camLight ) 
 
