@@ -11,7 +11,8 @@ var Earth = function() {
     skyColor: [15, 0, 0],
     skyAlpha: 0.2,
     atmosphereColor: [179, 179, 215],
-    shininess: 20
+    shininess: 20,
+    water: [10, 10, 200]
   };
 
   var earthTexture = THREE.ImageUtils.loadTexture('assets/newearth.png');
@@ -21,7 +22,6 @@ var Earth = function() {
   this.earthMaterial = new THREE.MeshPhongMaterial({
     map: earthTexture,
     color: new THREE.Color(0x00ff00),
-    // emissive: new THREE.Color(0x000000),
     specular: new THREE.Color(0x9bd3fe),
     transparent: true,
     opacity: this.opacity,
@@ -77,6 +77,9 @@ var Earth = function() {
   });
   earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value) {
     this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
+  }.bind(this));
+  earthFolder.addColor(this.params, "water").onChange(function(value){
+     this.earthMaterial.specular.setRGB(value[0] / 255, value[1] / 255, value[2] / 255);
   }.bind(this));
   earthFolder.add(this.params, "shininess", 1, 100).onChange(function(value) {
     this.earthMaterial.shininess = value
