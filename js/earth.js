@@ -15,30 +15,46 @@ var Earth = function() {
     shininess: 2,
     water: [10, 10, 200]
   };
+  this.skyColor = new THREE.Color().setRGB(this.params.skyColor[0] / 255, this.params.skyColor[1] / 255, this.params.skyColor[2] / 255);
+  renderer.setClearColor(this.skyColor, this.params.skyAlpha);
 
   var earthTexture = THREE.ImageUtils.loadTexture('assets/newearth.png');
 
-
-
+  //OUTER EARTH
   this.earthMaterial = new THREE.MeshPhongMaterial({
     map: earthTexture,
-    color: new THREE.Color(0x00ff00),
+    color: new THREE.Color(0x0a960a),
     specular: new THREE.Color(0x0a0ac8),
     transparent: true,
     opacity: this.opacity,
     shininess: this.params.shininess,
     specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
     normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg'),
-
-  })
-
-  this.skyColor = new THREE.Color().setRGB(this.params.skyColor[0] / 255, this.params.skyColor[1] / 255, this.params.skyColor[2] / 255);
-  renderer.setClearColor(this.skyColor, this.params.skyAlpha);
-
+  });
   var earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 60, 40);
   var earthMesh = new THREE.Mesh(earthGeo, this.earthMaterial);
   earthMesh.rotation.y = Math.PI;
   scene.add(earthMesh);
+
+  //INNER EARTH
+  this.innerEarthMaterial = new THREE.MeshBasicMaterial({
+    map: earthTexture,
+    color: new THREE.Color(0x0a960a),
+    specular: new THREE.Color(0x0a0ac8),
+    transparent: true,
+    opacity: 0.1,
+    shininess: this.params.shininess,
+    specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
+    normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg'),
+    side: THREE.BackSide,
+    depthWrite: false,
+    depthTest: false,
+  });
+  var innerEarthMesh = new THREE.Mesh(earthGeo, this.innerEarthMaterial);
+  // innerEarthMesh.scale.set(1.1, 1.1, 1.1)
+  scene.add(innerEarthMesh); 
+
+
 
   this.atmosphereMaterial = new THREE.ShaderMaterial({
     uniforms: {
@@ -65,6 +81,7 @@ var Earth = function() {
   var earthFolder = gui.addFolder('Earth');
   earthFolder.add(this, 'opacity', 0, 1).onChange(function(value) {
     this.earthMaterial.opacity = value;
+    this.innerEarthMaterial.opacity = value;
   }.bind(this));
   earthFolder.add(this.params, 'castIntervalMin', 100, 10000);
   earthFolder.add(this.params, 'castIntervalMax', 1000, 10000);
@@ -72,6 +89,7 @@ var Earth = function() {
   earthFolder.add(this.params, 'shineTimeMax', 10000, 100000);
   earthFolder.addColor(this.params, 'earthColor').onChange(function(value) {
     this.earthMaterial.color.setRGB(value[0] / 255, value[1] / 255, value[2] / 255);
+    this.innerEarthMaterial.color.setRGB(value[0] / 255, value[1] / 255, value[2] / 255);
   }.bind(this));
   earthFolder.addColor(this.params, 'skyColor').onChange(function(value) {
     this.skyColor.setRGB(this.params.skyColor[0] / 255, this.params.skyColor[1] / 255, this.params.skyColor[2] / 255);
@@ -89,7 +107,7 @@ var Earth = function() {
   earthFolder.addColor(this.params, "water").onChange(function(value){
      this.earthMaterial.specular.setRGB(value[0] / 255, value[1] / 255, value[2] / 255);
   }.bind(this));
-  earthFolder.add(this.params, "shininess", 0, 4).onChange(function(value) {
+  earthFolder.add(this.params, "shininess", 0, 100).onChange(function(value) {
     this.earthMaterial.shininess = value
   }.bind(this));
 
