@@ -13,12 +13,18 @@ var Earth = function() {
     atmosphereColor: [179, 179, 215],
     atmosphereIntensity: 5,
     shininess: 2,
-    water: [10, 10, 200]
+    waterColor: [10, 10, 200],
+    waterNormalsScaleX: 1,
+    waterNormalsScaleY: 1,
   };
   this.skyColor = new THREE.Color().setRGB(this.params.skyColor[0] / 255, this.params.skyColor[1] / 255, this.params.skyColor[2] / 255);
   renderer.setClearColor(this.skyColor, this.params.skyAlpha);
 
   var earthTexture = THREE.ImageUtils.loadTexture('assets/newearth.png');
+  earthTexture.minFilter = THREE.NearestFilter;
+
+  var specularTexture = THREE.ImageUtils.loadTexture('assets/earth-specular.jpg');
+  specularTexture.minFilter = THREE.NearestFilter;
 
   //OUTER EARTH
   this.earthMaterial = new THREE.MeshPhongMaterial({
@@ -28,8 +34,9 @@ var Earth = function() {
     transparent: true,
     opacity: this.opacity,
     shininess: this.params.shininess,
-    specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
+    specularMap: specularTexture,
     normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg'),
+    normalScale: new THREE.Vector2( this.params.waterNormalsScaleX, this.params.waterNormalsScaleY ),
   });
   var earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 60, 40);
   var earthMesh = new THREE.Mesh(earthGeo, this.earthMaterial);
@@ -44,13 +51,13 @@ var Earth = function() {
     transparent: true,
     opacity: 0.2,
     shininess: this.params.shininess,
-    specularMap: THREE.ImageUtils.loadTexture('assets/earth-specular.jpg'),
+    specularMap: specularTexture,
     normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg'),
     side: THREE.BackSide,
     depthTest: false,
   });
   var innerEarthMesh = new THREE.Mesh(earthGeo, this.innerEarthMaterial);
-  // innerEarthMesh.scale.set(1.1, 1.1, 1.1)
+  innerEarthMesh.scale.set(1.1, 1.1, 1.1)
   scene.add(innerEarthMesh); 
   innerEarthMesh.rotation.y = Math.PI
 
@@ -75,7 +82,7 @@ var Earth = function() {
 
   this.atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
   this.atmosphereMesh.scale.set(1.1, 1.1, 1.1);
-  scene.add(this.atmosphereMesh);
+  // scene.add(this.atmosphereMesh);
 
 
   var earthFolder = gui.addFolder('Earth');
@@ -103,8 +110,14 @@ var Earth = function() {
   earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value) {
     this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
   }.bind(this));
-  earthFolder.addColor(this.params, "water").onChange(function(value){
+  earthFolder.addColor(this.params, "waterColor").onChange(function(value){
      this.earthMaterial.specular.setRGB(value[0] / 255, value[1] / 255, value[2] / 255);
+  }.bind(this));
+  earthFolder.add(this.params, 'waterNormalsScaleX', 0, 2).onChange(function(value){
+    this.earthMaterial.normalScale.x = value;
+  }.bind(this));
+    earthFolder.add(this.params, 'waterNormalsScaleX', 0, 2).onChange(function(value){
+    this.earthMaterial.normalScale.y = value;
   }.bind(this));
   earthFolder.add(this.params, "shininess", 0, 100).onChange(function(value) {
     this.earthMaterial.shininess = value
@@ -115,7 +128,15 @@ var Earth = function() {
 Earth.prototype.yehior = function() {
   this.castTimeout = setTimeout(function() {
     this.prepareBeam();
-    this.yehior();
+    this.prepareBeam();
+    this.prepareBeam();
+    this.prepareBeam();
+    this.prepareBeam();
+    this.prepareBeam();
+    this.prepareBeam();
+    this.prepareBeam();
+    this.prepareBeam();   
+    // this.yehior();
   }.bind(this), _.random(this.params.castIntervalMin, this.params.castIntervalMax));
 }
 
@@ -134,24 +155,23 @@ Earth.prototype.update = function() {
 }
 
 Earth.prototype.prepareBeam = function() {
-  var locationPair = fakeDataServer.generateLocationPair();
-  var startPoint = this.mapPoint(locationPair.start.latitude, locationPair.start.longitude);
-  var endPoint = this.mapPoint(locationPair.end.latitude, locationPair.end.longitude);
-  light.castBeam(startPoint, endPoint, _.random(this.params.shineTimeMin, this.params.shineTimeMax));
+  this.locationPair = fakeDataServer.generateLocationPair();
+  this.startPoint = this.mapPoint(this.locationPair.start.latitude, this.locationPair.start.longitude);
+  this.endPoint = this.mapPoint(this.locationPair.end.latitude, this.locationPair.end.longitude);
+  light.castBeam(this.startPoint, this.endPoint, _.random(this.params.shineTimeMin, this.params.shineTimeMax));
 }
 
 
 Earth.prototype.mapPoint = function(latitude, longitude) {
 
-  var phi = (90 - latitude) * Math.PI / 180;
-  var theta = (180 - longitude) * Math.PI / 180;
+  this.phi = (90 - latitude) * Math.PI / 180;
+  this.theta = (180 - longitude) * Math.PI / 180;
 
-  var point = new THREE.Vector3(
-    EARTH_RADIUS * Math.sin(phi) * Math.cos(theta),
-    EARTH_RADIUS * Math.cos(phi),
-    EARTH_RADIUS * Math.sin(phi) * Math.sin(theta)
+  return new THREE.Vector3(
+    EARTH_RADIUS * Math.sin(this.phi) * Math.cos(this.theta),
+    EARTH_RADIUS * Math.cos(this.phi),
+    EARTH_RADIUS * Math.sin(this.phi) * Math.sin(this.theta)
   )
 
-  return point;
 
 }

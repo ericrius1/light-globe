@@ -6,6 +6,7 @@ var Light = function() {
   this.camLight = new THREE.DirectionalLight(0xffffff, 1.5);
   this.camDirVector = new THREE.Vector3(0, 0, -1);
   this.shnur = 1;
+  this.maxAge = 20;
 
   this.params = {
     color: [214, 220, 170],
@@ -32,16 +33,8 @@ var Light = function() {
     this.camLight.intensity = value;
   }.bind(this));
 
-
-
-
   this.camLight = new THREE.DirectionalLight( 0xffffff, this.params.intensity);
-
   scene.add( this.camLight ) 
-
-
-
-
 }
 
 Light.prototype.changeColor = function(){
@@ -62,13 +55,13 @@ Light.prototype.updateParticleCount = function(value) {
 Light.prototype.createLightBeams = function() {
   this.pGroup = new SPE.Group({
     texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
-    maxAge: 2
+    maxAge: 20
   });
 
   var emitterParams = {
     sizeStart: this.params.size,
-    particleCount: 2000,
-    opacityStart: 0.2,
+    particleCount: 400,
+    opacityStart: 1,
     opacityEnd: 0.2,
     colorStart: new THREE.Color().setRGB(this.params.color[0]/255, this.params.color[1]/255, this.params.color[2]/255),
     alive: this.params.alive,
@@ -91,8 +84,6 @@ Light.prototype.destroyLightsBeams = function() {
   this.emitters = [];
 }
 
-
-
 Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
 
   //get velocity direction
@@ -101,14 +92,13 @@ Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
   }
   var emitter = this.emitters[this.emitterIndex++];
   var velDir = new THREE.Vector3().subVectors(endPoint, startPoint);
-  velDir.divideScalar(2);
+  velDir.divideScalar(this.maxAge);
   emitter.velocity = velDir;
   emitter.position.copy(startPoint);
   emitter.enable();
 
-
   setTimeout(function() {
-    emitter.disable()
+    // emitter.disable()
   }.bind(this), shineTime)
 
 }
