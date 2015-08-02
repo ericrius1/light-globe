@@ -11,7 +11,7 @@ var Earth = function() {
     skyColor: [15, 0, 0],
     skyAlpha: 0.2,
     atmosphereColor: [179, 179, 215],
-    shininess: 20,
+    shininess: 2,
     water: [10, 10, 200]
   };
 
@@ -83,7 +83,7 @@ var Earth = function() {
   earthFolder.addColor(this.params, "water").onChange(function(value){
      this.earthMaterial.specular.setRGB(value[0] / 255, value[1] / 255, value[2] / 255);
   }.bind(this));
-  earthFolder.add(this.params, "shininess", 1, 100).onChange(function(value) {
+  earthFolder.add(this.params, "shininess", 0, 4).onChange(function(value) {
     this.earthMaterial.shininess = value
   }.bind(this));
 

@@ -11,7 +11,7 @@ var Light = function() {
     color: [214, 220, 170],
     alive: 1.0,
     size: 5,
-    intensity: 0.2
+    intensity: 0.6
   }
 
   lightFolder.addColor(this.params, 'color').onChange(_.debounce(function(value) {
