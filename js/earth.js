@@ -82,7 +82,7 @@ var Earth = function() {
 
   this.atmosphereMesh = new THREE.Mesh(earthGeo, this.atmosphereMaterial);
   this.atmosphereMesh.scale.set(1.1, 1.1, 1.1);
-  // scene.add(this.atmosphereMesh);
+  scene.add(this.atmosphereMesh);
 
 
   var earthFolder = gui.addFolder('Earth');
