@@ -104,17 +104,30 @@ var Earth = function() {
       this.innerEarthMaterial.color.setHex(hex)
     }
   }.bind(this));
-  earthFolder.add(this.params, 'skyAlpha', 0, 1).onChange(function(value) {
-    renderer.setClearColor(this.skyColor, value);
-  });
+  earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value) {
+    if (Array.isArray(value)) {
+      this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
+
+    } else {
+      var rgb = hexToRgb(value);
+       this.atmosphereMaterial.uniforms.atmosphereColor.value.set(rgb.r / 255, rgb.g / 255, rgb.b / 255);
+
+    }
+  }.bind(this));
   earthFolder.add(this.params, 'atmosphereIntensity', 0, 10).onChange(function(value) {
     this.atmosphereMaterial.uniforms.intensity.value = (10 - value);
   }.bind(this));
-  earthFolder.addColor(this.params, 'atmosphereColor').onChange(function(value) {
-    this.atmosphereMaterial.uniforms.atmosphereColor.value.set(value[0] / 255, value[1] / 255, value[2] / 255);
-  }.bind(this));
   earthFolder.addColor(this.params, "waterColor").onChange(function(value) {
-    this.earthMaterial.specular.setRGB(value[0] / 255, value[1] / 255, value[2] / 255);
+
+    if (Array.isArray(value)) {
+      this.earthMaterial.specular.setRGB(value[0] / 255, value[1] / 255, value[2] / 255);
+    } else {
+      var hex = value.substr(1);
+      hex = parseInt(hex, 16);
+      this.earthMaterial.color.setHex(hex);
+      this.innerEarthMaterial.color.setHex(hex)
+      this.earthMaterial.specular.setHex(hex);
+    }
   }.bind(this));
   earthFolder.add(this.params, 'waterNormalsScaleX', 0, 2).onChange(function(value) {
     this.earthMaterial.normalScale.x = value;
@@ -177,4 +190,13 @@ Earth.prototype.mapPoint = function(latitude, longitude) {
   )
 
 
+}
+
+function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
 }
