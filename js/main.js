@@ -67,8 +67,10 @@ function init() {
   light = new Light();
   light.createLightBeams();
 
+
+
   earth = new Earth();
-  earth.yehior();
+  earth.sessionPoll();
   animate();
   setTimeout(function(){
     zoomCam();

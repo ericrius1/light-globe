@@ -1,5 +1,5 @@
 var Earth = function() {
-  this.activeSessionURL = "http://aqueous-dawn-6247.herokuapp.com/api/active_sessions";
+  this.activeSessionURL = "https://api.parse.com/1/classes/activesessions";
   this.opacity = 1;
   this.camToCenterDistance = null;
   this.prevCamToCenterDistance = null;
@@ -22,7 +22,6 @@ var Earth = function() {
 
   var earthTexture = THREE.ImageUtils.loadTexture('assets/newearth.png');
   earthTexture.minFilter = THREE.NearestFilter;
-
   var specularTexture = THREE.ImageUtils.loadTexture('assets/earth-specular.jpg');
   specularTexture.minFilter = THREE.NearestFilter;
 
@@ -142,22 +141,27 @@ var Earth = function() {
 
 }
 
-Earth.prototype.yehior = function() {
+Earth.prototype.sessionPoll = function() {
   $.ajax({
     url: this.activeSessionURL,
+    headers: {
+      "X-Parse-Application-Id": "6MI1KGs6WhNuOJ1LkhadiDNcfGvhu0adyXbEJWFy",
+      "X-Parse-REST-API-Key": "vPXeh8JgfEcAFxPMrwnLccFlgY5JWAoCUg3y9PRc"
+    },
     method: 'GET',
     dataType: 'json',
     success: function(data) {
-      this.processData(data)
-    }.bind(this),
-    xhrFields: {
-      withCredentials: true
-    }
+      this.processSessions(data);
+    }.bind(this)
   });
 }
 
-Earth.prototype.processData = function(data) {
+Earth.prototype.processSessions = function(data) {
   console.log("AJAX DATA ", data)
+  var session = data.results[0];
+  var startPoint = this.mapPoint(session.studentlat, session.studentlong);
+  var endPoint = this.mapPoint(session.teacherlat, session.teacherlong);
+  light.castBeam(startPoint, endPoint); 
 }
 
 
@@ -174,13 +178,6 @@ Earth.prototype.update = function() {
     this.atmosphereMesh.visible = true;
   }
   this.prevCamToCenterDistance = this.camToCenterDistance;
-}
-
-Earth.prototype.prepareBeam = function() {
-  this.locationPair = fakeDataServer.generateLocationPair();
-  this.startPoint = this.mapPoint(this.locationPair.start.latitude, this.locationPair.start.longitude);
-  this.endPoint = this.mapPoint(this.locationPair.end.latitude, this.locationPair.end.longitude);
-  light.castBeam(this.startPoint, this.endPoint, _.random(this.params.shineTimeMin, this.params.shineTimeMax));
 }
 
 

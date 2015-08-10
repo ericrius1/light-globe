@@ -84,7 +84,7 @@ Light.prototype.destroyLightsBeams = function() {
   this.emitters = [];
 }
 
-Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
+Light.prototype.castBeam = function(startPoint, endPoint) {
 
   //get velocity direction
   if (this.emitterIndex >= this.emitters.length) {
@@ -96,10 +96,6 @@ Light.prototype.castBeam = function(startPoint, endPoint, shineTime) {
   emitter.velocity = velDir;
   emitter.position.copy(startPoint);
   emitter.enable();
-
-  setTimeout(function() {
-    // emitter.disable()
-  }.bind(this), shineTime)
 
 }
 
