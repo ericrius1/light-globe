@@ -1,4 +1,5 @@
 var Earth = function() {
+  this.activeSessionURL = "http://aqueous-dawn-6247.herokuapp.com/api/active_sessions";
   this.opacity = 1;
   this.camToCenterDistance = null;
   this.prevCamToCenterDistance = null;
@@ -110,7 +111,7 @@ var Earth = function() {
 
     } else {
       var rgb = hexToRgb(value);
-       this.atmosphereMaterial.uniforms.atmosphereColor.value.set(rgb.r / 255, rgb.g / 255, rgb.b / 255);
+      this.atmosphereMaterial.uniforms.atmosphereColor.value.set(rgb.r / 255, rgb.g / 255, rgb.b / 255);
 
     }
   }.bind(this));
@@ -142,19 +143,24 @@ var Earth = function() {
 }
 
 Earth.prototype.yehior = function() {
-  this.castTimeout = setTimeout(function() {
-    this.prepareBeam();
-    this.prepareBeam();
-    this.prepareBeam();
-    this.prepareBeam();
-    this.prepareBeam();
-    this.prepareBeam();
-    this.prepareBeam();
-    this.prepareBeam();
-    this.prepareBeam();
-    // this.yehior();
-  }.bind(this), _.random(this.params.castIntervalMin, this.params.castIntervalMax));
+  $.ajax({
+    url: this.activeSessionURL,
+    method: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      this.processData(data)
+    }.bind(this),
+    xhrFields: {
+      withCredentials: true
+    }
+  });
 }
+
+Earth.prototype.processData = function(data) {
+  console.log("AJAX DATA ", data)
+}
+
+
 
 Earth.prototype.update = function() {
   this.camToCenterDistance = camera.position.distanceTo(ORIGIN);
