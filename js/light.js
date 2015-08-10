@@ -96,6 +96,12 @@ Light.prototype.castBeam = function(startPoint, endPoint) {
   emitter.velocity = velDir;
   emitter.position.copy(startPoint);
   emitter.enable();
+  return emitter;
+
+}
+
+Light.prototype.disableBeam = function(emitter) {
+  emitter.disable();
 
 }
 

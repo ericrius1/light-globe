@@ -1,6 +1,6 @@
 var Earth = function() {
   this.activeSessionURL = "https://api.parse.com/1/classes/activesessions";
-  this.activeSessionIds = [];
+  this.activeSessions = [];
   this.opacity = 1;
   this.camToCenterDistance = null;
   this.prevCamToCenterDistance = null;
@@ -159,26 +159,41 @@ Earth.prototype.sessionPoll = function() {
 
 Earth.prototype.processSessions = function(data) {
   var sessions = data.results;
-  _.each(sessions, function(session){
-    if(!_.contains(this.activeSessionIds, session.objectId)){
-      console.log("AJAX DATA ", data)
-      this.activeSessionIds.push(session.objectId)
-      var startPoint = this.mapPoint(session.studentlat, session.studentlong);
-      var endPoint = this.mapPoint(session.teacherlat, session.teacherlong);
-      light.castBeam(startPoint, endPoint); 
-      console.log(startPoint, endPoint)
+
+  var polledSessions= data.results;
+  var polledIds = _.pluck(polledSessions, "objectId");
+  var activeIds = _.pluck(this.activeSessions, "id");
+
+  //Remove emitters that are no longer in active sessions
+  var leaving = _.difference(activeIds, polledIds);
+  //Add emitters which are new to active sessions
+  var arriving = _.difference(polledIds, activeIds);
+
+  leaving.forEach(function(sessionId){
+    var leavingObject = _.find(this.activeSessions, function(session){
+      return session.id === sessionId;
+    });
+    if (leavingObject){
+      light.disableBeam(leavingObject.emitter);
+      console.log("leaving object ", leavingObject);
     }
   }.bind(this));
+
+  arriving.forEach(function(arrivingId){
+    var session = _.find(sessions, function(session){
+      return session.objectId === arrivingId;
+    });
+    var startPoint = this.mapPoint(session.studentlat, session.studentlong);
+    var endPoint = this.mapPoint(session.teacherlat, session.teacherlong);
+    var emitter = light.castBeam(startPoint, endPoint);
+    this.activeSessions.push({id: session.objectId, emitter: emitter});
+  }.bind(this));
+
 }
-
-
 
 Earth.prototype.update = function() {
   this.camToCenterDistance = camera.position.distanceTo(ORIGIN);
   this.opacity = map(this.camToCenterDistance, EARTH_RADIUS, EARTH_RADIUS * 5, 0.6, 0.98);
-  if (Math.abs(this.camToCenterDistance - this.prevCamToCenterDistance) > 1) {
-    // this.earthMaterial.uniforms.opacity.value = this.opacity;
-  }
   if (this.camToCenterDistance < EARTH_RADIUS && this.atmosphereMesh.visible) {
     this.atmosphereMesh.visible = false;
   } else if (this.camToCenterDistance > EARTH_RADIUS && !this.atmosphereMesh.visible) {
