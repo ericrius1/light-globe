@@ -55,7 +55,7 @@ Light.prototype.updateParticleCount = function(value) {
 Light.prototype.createLightBeams = function() {
   this.pGroup = new SPE.Group({
     texture: THREE.ImageUtils.loadTexture('assets/smokeparticle.png'),
-    maxAge: 20
+    maxAge: 10
   });
 
   var emitterParams = {

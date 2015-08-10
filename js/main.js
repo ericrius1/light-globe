@@ -1,6 +1,8 @@
 var scene, camera, renderer, composer, earth, light, stars, controls, textSpawner, postParams, stats, testEarth;
 var renderModel, effectBloom, effectCopy, effectFXAA;
 
+var sessionPollIntervalTime = 5000;
+
 var fakeDataServer = new FakeDataServer();
 
 var shaders = new ShaderLoader('shaders');
@@ -71,6 +73,9 @@ function init() {
 
   earth = new Earth();
   earth.sessionPoll();
+  setInterval(function(){
+    earth.sessionPoll();
+  }, sessionPollIntervalTime);
   animate();
   setTimeout(function(){
     zoomCam();

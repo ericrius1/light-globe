@@ -1,5 +1,6 @@
 var Earth = function() {
   this.activeSessionURL = "https://api.parse.com/1/classes/activesessions";
+  this.activeSessionIds = [];
   this.opacity = 1;
   this.camToCenterDistance = null;
   this.prevCamToCenterDistance = null;
@@ -157,11 +158,17 @@ Earth.prototype.sessionPoll = function() {
 }
 
 Earth.prototype.processSessions = function(data) {
-  console.log("AJAX DATA ", data)
-  var session = data.results[0];
-  var startPoint = this.mapPoint(session.studentlat, session.studentlong);
-  var endPoint = this.mapPoint(session.teacherlat, session.teacherlong);
-  light.castBeam(startPoint, endPoint); 
+  var sessions = data.results;
+  _.each(sessions, function(session){
+    if(!_.contains(this.activeSessionIds, session.objectId)){
+      console.log("AJAX DATA ", data)
+      this.activeSessionIds.push(session.objectId)
+      var startPoint = this.mapPoint(session.studentlat, session.studentlong);
+      var endPoint = this.mapPoint(session.teacherlat, session.teacherlong);
+      light.castBeam(startPoint, endPoint); 
+      console.log(startPoint, endPoint)
+    }
+  }.bind(this));
 }
 
 
