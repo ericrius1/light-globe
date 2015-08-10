@@ -159,7 +159,6 @@ Earth.prototype.sessionPoll = function() {
 
 Earth.prototype.processSessions = function(data) {
   var sessions = data.results;
-
   var polledSessions= data.results;
   var polledIds = _.pluck(polledSessions, "objectId");
   var activeIds = _.pluck(this.activeSessions, "id");
@@ -175,7 +174,7 @@ Earth.prototype.processSessions = function(data) {
     });
     if (leavingObject){
       light.disableBeam(leavingObject.emitter);
-      console.log("leaving object ", leavingObject);
+      // console.log("leaving object ", leavingObject);
     }
   }.bind(this));
 
