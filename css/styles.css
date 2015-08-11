@@ -13,6 +13,7 @@ body{
   right: 0px;
   top: 0px;
   z-index: 999;
+  visibility: hidden;
 }
 .dg{
   font-size: 20px;

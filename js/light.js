@@ -11,7 +11,7 @@ var Light = function() {
   this.params = {
     color: [214, 220, 170],
     alive: 1.0,
-    size: 5,
+    size: 7,
     intensity: 0.6
   }
 

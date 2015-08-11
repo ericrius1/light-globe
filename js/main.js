@@ -62,7 +62,7 @@ function init() {
   })
 
   stats = new Stats();
-  document.body.appendChild(stats.domElement);
+  // document.body.appendChild(stats.domElement);
 
   stars = new Stars();
   stars.createStars();
@@ -110,7 +110,7 @@ function animate() {
   renderer.clear();
   composer.render();
   controls.update();
-  stats.update()
+  // stats.update()
   stars.update();  
   light.update();
   earth.update();
