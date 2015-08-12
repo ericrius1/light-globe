@@ -9,13 +9,13 @@ var Earth = function() {
     castIntervalMax: 1000,
     shineTimeMin: 10000,
     shineTimeMax: 100000,
-    earthColor: [10, 150, 10],
+    earthColor: [34, 196, 55],
     skyColor: [15, 0, 0],
     skyAlpha: 0.2,
-    atmosphereColor: [179, 179, 215],
+    atmosphereColor: [215, 215, 179],
     atmosphereIntensity: 5,
     shininess: 2,
-    waterColor: [10, 10, 200],
+    waterColor: [11, 224, 237],
     waterNormalsScaleX: 1,
     waterNormalsScaleY: 1,
   };
@@ -30,7 +30,7 @@ var Earth = function() {
   this.earthMaterial = new THREE.MeshPhongMaterial({
     map: earthTexture,
     color: new THREE.Color(0x0a960a),
-    specular: new THREE.Color(0x0a0ac8),
+    specular: new THREE.Color(0x0be0ed),
     transparent: true,
     opacity: this.opacity,
     shininess: this.params.shininess,
@@ -46,8 +46,8 @@ var Earth = function() {
   //INNER EARTH
   this.innerEarthMaterial = new THREE.MeshBasicMaterial({
     map: earthTexture,
-    color: new THREE.Color(0x0a960a),
-    specular: new THREE.Color(0x0a0ac8),
+    color: new THREE.Color(0x22cf37),
+    specular: new THREE.Color(0x0be0ed),
     transparent: true,
     opacity: 0.2,
     shininess: this.params.shininess,
