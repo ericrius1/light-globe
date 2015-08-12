@@ -92,7 +92,7 @@ Light.prototype.castBeam = function(startPoint, endPoint) {
   }
   var emitter = this.emitters[this.emitterIndex++];
   var velDir = new THREE.Vector3().subVectors(endPoint, startPoint);
-  velDir.divideScalar(this.maxAge);
+  velDir.divideScalar(this.maxAge/2);
   emitter.velocity = velDir;
   emitter.position.copy(startPoint);
   emitter.enable();
