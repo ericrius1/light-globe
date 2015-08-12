@@ -182,10 +182,12 @@ Earth.prototype.processSessions = function(data) {
     var session = _.find(sessions, function(session){
       return session.objectId === arrivingId;
     });
-    var startPoint = this.mapPoint(session.studentlat, session.studentlong);
-    var endPoint = this.mapPoint(session.teacherlat, session.teacherlong);
-    var emitter = light.castBeam(startPoint, endPoint);
-    this.activeSessions.push({id: session.objectId, emitter: emitter});
+    if(session && session.studentlat && session.studentlong && session.teacherlat && session.teacherlong) {
+      var startPoint = this.mapPoint(session.studentlat, session.studentlong);
+      var endPoint = this.mapPoint(session.teacherlat, session.teacherlong);
+      var emitter = light.castBeam(startPoint, endPoint);
+      this.activeSessions.push({id: session.objectId, emitter: emitter});
+    }
   }.bind(this));
 
 }
@@ -206,7 +208,6 @@ Earth.prototype.mapPoint = function(latitude, longitude) {
 
   this.phi = (90 - latitude) * Math.PI / 180;
   this.theta = (180 - longitude) * Math.PI / 180;
-
   return new THREE.Vector3(
     EARTH_RADIUS * Math.sin(this.phi) * Math.cos(this.theta),
     EARTH_RADIUS * Math.cos(this.phi),
