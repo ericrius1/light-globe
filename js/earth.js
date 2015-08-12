@@ -1,7 +1,7 @@
 var Earth = function() {
   this.activeSessionURL = "https://api.parse.com/1/classes/activesessions";
   this.activeSessions = [];
-  this.opacity = 1;
+  this.opacity = 0.8;
   this.camToCenterDistance = null;
   this.prevCamToCenterDistance = null;
   this.params = {
@@ -57,7 +57,7 @@ var Earth = function() {
     depthTest: false,
   });
   var innerEarthMesh = new THREE.Mesh(earthGeo, this.innerEarthMaterial);
-  innerEarthMesh.scale.set(1.1, 1.1, 1.1)
+  innerEarthMesh.scale.set(0.95, 0.95, 0.95)
   scene.add(innerEarthMesh);
   innerEarthMesh.rotation.y = Math.PI
 
