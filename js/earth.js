@@ -35,6 +35,7 @@ var Earth = function() {
     opacity: this.opacity,
     shininess: this.params.shininess,
     specularMap: specularTexture,
+    bumpMap: THREE.ImageUtils.loadTexture('assets/earth-bump.jpg'),
     normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg'),
     normalScale: new THREE.Vector2(this.params.waterNormalsScaleX, this.params.waterNormalsScaleY),
   });
@@ -49,7 +50,7 @@ var Earth = function() {
     color: new THREE.Color(0x22cf37),
     specular: new THREE.Color(0x0be0ed),
     transparent: true,
-    opacity: 0.2,
+    opacity: 0.05,
     shininess: this.params.shininess,
     specularMap: specularTexture,
     normalMap: THREE.ImageUtils.loadTexture('assets/waternormals.jpg'),
