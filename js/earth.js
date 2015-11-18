@@ -143,19 +143,27 @@ var Earth = function() {
 
 }
 
+// Earth.prototype.sessionPoll = function() {
+//   $.ajax({
+//     url: this.activeSessionURL,
+//     headers: {
+//       "X-Parse-Application-Id": "6MI1KGs6WhNuOJ1LkhadiDNcfGvhu0adyXbEJWFy",
+//       "X-Parse-REST-API-Key": "vPXeh8JgfEcAFxPMrwnLccFlgY5JWAoCUg3y9PRc"
+//     },
+//     method: 'GET',
+//     dataType: 'json',
+//     success: function(data) {
+//       this.processSessions(data);
+//     }.bind(this)
+//   });
+// }
+
 Earth.prototype.sessionPoll = function() {
-  $.ajax({
-    url: this.activeSessionURL,
-    headers: {
-      "X-Parse-Application-Id": "6MI1KGs6WhNuOJ1LkhadiDNcfGvhu0adyXbEJWFy",
-      "X-Parse-REST-API-Key": "vPXeh8JgfEcAFxPMrwnLccFlgY5JWAoCUg3y9PRc"
-    },
-    method: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      this.processSessions(data);
-    }.bind(this)
-  });
+  var locPair = fakeDataServer.generateLocationPair();
+  var startPoint = this.mapPoint(locPair.start.latitude, locPair.start.longitude);
+  var endPoint = this.mapPoint(locPair.end.latitude, locPair.end.longitude);
+  light.castBeam(startPoint, endPoint);
+  
 }
 
 Earth.prototype.processSessions = function(data) {
